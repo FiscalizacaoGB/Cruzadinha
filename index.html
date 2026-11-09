@@ -83,7 +83,10 @@ h3{margin:0 0 10px;font-size:16px;font-weight:900}
 .cel input{width:100%;height:100%;border:0;background:transparent;text-align:center;font-weight:900;font-size:calc(var(--sz)*.55);text-transform:uppercase;padding:0;padding-top:calc(var(--sz)*.08);outline:none;caret-color:transparent;border-radius:0}
 .cel.hl{background:var(--hl)}
 .cel.at{background:var(--act)}
-.cel.fixa input{color:var(--pri)}
+.cel input{color:var(--ink);position:relative;z-index:1}
+.cel .dica{position:absolute;inset:0;display:grid;place-items:center;padding-top:calc(var(--sz)*.08);font-weight:800;font-size:calc(var(--sz)*.55);color:var(--pri);opacity:.32;pointer-events:none}
+.cel.cheia .dica{display:none}
+.cel.ajuda input{color:var(--pri)}
 .cel.erro{background:var(--bad-soft)}.cel.erro input{color:var(--bad)}
 .cel.ok{background:var(--ok-soft);animation:pop .4s ease both}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
@@ -825,8 +828,8 @@ function mostra(v){
 const TOUCH = matchMedia('(pointer:coarse)').matches;
 document.body.classList.toggle('touch', TOUCH);
 function renderNiveis(){
-  const desc={ facil:'Grade até 9×9 · 6 palavras curtas · 1ª letra de cada palavra revelada', intermediario:'Grade até 12×12 · 8 palavras · algumas letras reveladas',
-    dificil:'Grade até 14×14 · 10 palavras longas · nenhuma letra revelada', avancado:'Grade até 16×16 · 12 palavras raras e eruditas · sem letras reveladas' };
+  const desc={ facil:'Grade até 9×9 · 6 palavras curtas · 1ª letra de cada palavra aparece como dica', intermediario:'Grade até 12×12 · 8 palavras · algumas letras aparecem como dica',
+    dificil:'Grade até 14×14 · 10 palavras longas · sem letras de dica', avancado:'Grade até 16×16 · 12 palavras raras e eruditas · sem letras de dica' };
   $('#niveis').innerHTML=Object.values(NIVEIS).map((L,k)=>`<button class="nivel" data-n="${L.key}"><span class="p">${L.pontos} pt${L.pontos>1?'s':''}</span><b>${L.nome}</b><div class="dots">${'●'.repeat(k+1)}${'○'.repeat(3-k)}</div><small>${desc[L.key]}</small><span class="go">Jogar →</span></button>`).join('');
   document.querySelectorAll('.nivel').forEach(b=>b.onclick=()=>{ S.nivel=b.dataset.n; store.set('pc_nivel',S.nivel); novoJogo(); });
   $('#lobbyInfo').innerHTML = S.user ? (S.user.jogouHoje ? '✅ Meta diária de hoje cumprida. Continue jogando para subir no ranking.' : '🎯 Conclua uma partida hoje para ganhar <b>+5</b> da meta diária.') : 'Cada partida é sorteada entre milhares de jogos diferentes. Crie um usuário para somar pontos.';
@@ -853,7 +856,6 @@ function novoJogo(){
 }
 function iniciaJogo(g, inicio){
   S.jogo=g; S.ent={}; S.fim=false; S.dicas=0; S.inicio=inicio;
-  g.revelada.forEach(k=>{ const [r,c]=k.split(',').map(Number); S.ent[k]=g.cells[r][c].ch; });
   S.mapa={}; g.palavras.forEach((p,i)=>{ for(let k=0;k<p.word.length;k++){ const r=p.r+(p.dir==='V'?k:0), c=p.c+(p.dir==='H'?k:0), key=r+','+c; (S.mapa[key]=S.mapa[key]||{})[p.dir]=i; } });
   entraFoco(); renderBoard(); renderPistas(); ajustaTamanho();
   $('#jogoNivel').textContent=(S.modo==='duelo'?'⚔️ Duelo · ':'')+NIVEIS[g.nivel].nome; $('#jogoId').textContent='#'+g.id;
@@ -871,8 +873,8 @@ function renderBoard(){
   for(let r=0;r<g.rows;r++) for(let c=0;c<g.cols;c++){
     const cell=g.cells[r][c], k=r+','+c;
     if(!cell){ h+='<div class="cel"></div>'; continue; }
-    const fixa=g.revelada.has(k);
-    h+=`<div class="cel v ${fixa?'fixa':''}" data-k="${k}">${cell.num?`<span class="n">${cell.num}</span>`:''}<input inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="linha ${r+1} coluna ${c+1}" value="${S.ent[k]||''}" ${fixa||TOUCH?'readonly':''} ${TOUCH?'inputmode="none" tabindex="-1"':''}></div>`;
+    const dica=g.revelada.has(k);
+    h+=`<div class="cel v ${dica?'temdica':''}" data-k="${k}">${cell.num?`<span class="n">${cell.num}</span>`:''}${dica?`<span class="dica">${cell.ch}</span>`:''}<input inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="linha ${r+1} coluna ${c+1}" value="${S.ent[k]||''}" ${TOUCH?'readonly':''} ${TOUCH?'inputmode="none" tabindex="-1"':''}></div>`;
   }
   b.innerHTML=h;
   b.querySelectorAll('.cel.v').forEach(el=>{
@@ -911,10 +913,10 @@ function selec(r,c,d,foca=true){
   $('#pistaAtual').innerHTML=`<b>${p.num} ${p.dir==='H'?'Horizontal':'Vertical'}</b><span>${esc(p.clue)} (${p.word.length})</span>`;
   if(foca&&!TOUCH){ const inp=document.querySelector(`#board .cel[data-k="${r},${c}"] input`); if(inp&&document.activeElement!==inp) inp.focus({preventScroll:true}); else if(inp) inp.select(); }
 }
-function setCel(r,c,ch){ const k=r+','+c; if(S.jogo.revelada.has(k)) return; S.ent[k]=ch; const el=document.querySelector(`#board .cel[data-k="${k}"]`); el.querySelector('input').value=ch; el.classList.remove('erro'); }
+function setCel(r,c,ch){ const k=r+','+c; S.ent[k]=ch; const el=document.querySelector(`#board .cel[data-k="${k}"]`); el.querySelector('input').value=ch; el.classList.remove('erro'); el.classList.toggle('cheia',!!ch); }
 function avanca(passo){
   const p=palavraAtual(), cs=cellsDe(p); let i=cs.findIndex(([r,c])=>r===S.at[0]&&c===S.at[1]);
-  for(let t=0;t<cs.length;t++){ i+=passo; if(i<0||i>=cs.length) return; const k=cs[i].join(','); if(!S.jogo.revelada.has(k)){ selec(cs[i][0],cs[i][1],S.dir); return; } }
+  for(let t=0;t<cs.length;t++){ i+=passo; if(i<0||i>=cs.length) return; selec(cs[i][0],cs[i][1],S.dir); return; }
 }
 function digita(inp,r,c){
   if(S.fim){ inp.value=S.ent[r+','+c]||''; return; }
@@ -934,12 +936,12 @@ function tecla(e,r,c){
 function pulaPalavra(passo){ const ps=S.jogo.palavras, i=ps.indexOf(palavraAtual()), n=ps[(i+passo+ps.length)%ps.length], f=primeiraVazia(n); selec(f[0],f[1],n.dir); }
 function letra(ch){
   if(S.fim||!S.at) return;
-  let [r,c]=S.at; if(S.jogo.revelada.has(r+','+c)){ avanca(1); [r,c]=S.at; if(S.jogo.revelada.has(r+','+c)) return; }
+  const [r,c]=S.at;
   setCel(r,c,ch); avanca(1); marcaFeitas(); checaFim();
 }
 function apagar(voltar){
   if(S.fim||!S.at) return; const [r,c]=S.at, key=r+','+c;
-  if(S.ent[key]&&!S.jogo.revelada.has(key)) setCel(r,c,''); else if(voltar){ avanca(-1); const [rr,cc]=S.at; setCel(rr,cc,''); }
+  if(S.ent[key]) setCel(r,c,''); else if(voltar){ avanca(-1); const [rr,cc]=S.at; setCel(rr,cc,''); }
   marcaFeitas();
 }
 function marcaFeitas(){
@@ -958,8 +960,8 @@ $('#btnDica').onclick=()=>{
   const L=NIVEIS[S.jogo.nivel]; if(S.fim||S.dicas>=L.dicas) return;
   const p=palavraAtual(); const alvo=cellsDe(p).find(([r,c])=>S.ent[r+','+c]!==S.jogo.cells[r][c].ch);
   if(!alvo){ toast('Essa palavra já está correta. Escolha outra.'); return; }
-  S.dicas++; const [r,c]=alvo; setCel(r,c,S.jogo.cells[r][c].ch); S.jogo.revelada.add(r+','+c);
-  const el=document.querySelector(`#board .cel[data-k="${r},${c}"]`); el.classList.add('fixa'); el.querySelector('input').readOnly=true;
+  S.dicas++; const [r,c]=alvo; setCel(r,c,S.jogo.cells[r][c].ch);
+  const el=document.querySelector(`#board .cel[data-k="${r},${c}"]`); el.classList.add('ajuda');
   atualizaDica(); marcaFeitas(); if(S.modo==='duelo') toast('+15 s de penalidade no duelo.'); checaFim();
 };
 $('#btnDesistir').onclick=async()=>{
@@ -980,7 +982,7 @@ $('#pNext').onclick=()=>pulaPalavra(1);
 async function conclui(desistiu){
   S.fim=true; const ms=Date.now()-S.inicio; atualizaDica();
   const g=S.jogo;
-  document.querySelectorAll('#board .cel.v').forEach((el,i)=>{ const [r,c]=el.dataset.k.split(',').map(Number); el.querySelector('input').value=g.cells[r][c].ch; if(!desistiu) setTimeout(()=>el.classList.add('ok'),i*12); });
+  document.querySelectorAll('#board .cel.v').forEach((el,i)=>{ const [r,c]=el.dataset.k.split(',').map(Number); el.querySelector('input').value=g.cells[r][c].ch; el.classList.add('cheia'); if(!desistiu) setTimeout(()=>el.classList.add('ok'),i*12); });
   if(S.modo==='duelo'){
     try{
       const r=await api('duelSubmit',{ token:S.token, id:S.duelo.id, dicas:S.dicas, desistiu });
