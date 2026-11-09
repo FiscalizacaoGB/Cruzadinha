@@ -97,6 +97,8 @@ h3{margin:0 0 10px;font-size:16px;font-weight:900}
 .pistas li b{min-width:22px;color:var(--ink2)}
 .pistas li:hover{background:var(--bg2)}
 .pistas li.on{background:var(--pri-soft)}
+.pistas li.errada{background:var(--bad-soft);color:var(--bad);text-decoration:none!important}
+.pistas li.errada b{color:var(--bad)}
 .pistas li.feito{color:var(--ink2);text-decoration:line-through}
 .pistas li span em{font-style:normal;color:var(--ink2);font-size:12px}
 /* ranking */
@@ -470,14 +472,113 @@ avancado: [
 ]
 };
 
+/* Ampliação do banco de palavras */
+BANCO.facil.push(
+"ALHO|Tempero de cheiro forte que vem em dentes","ANEL|Joia usada no dedo","ARCO|Lança flechas","AREIA|Tem muito na praia","BALDE|Usado para carregar água",
+"BALÃO|Enche de ar e sobe","BANCO|Assento comprido da praça","BARBA|Pelos no rosto","BEIJO|Carinho com os lábios","BICO|Boca das aves",
+"BOLSA|Usada para carregar objetos","BONÉ|Chapéu com aba na frente","BOTA|Calçado de cano alto","BRISA|Vento fraquinho","BURRO|Animal parecido com o cavalo, de orelhas grandes",
+"CABRA|Animal que dá leite e tem chifres","CALOR|Sensação de quente","CAMPO|Área aberta no interior","CANETA|Escreve com tinta","CANOA|Barco estreito movido a remo",
+"CARTA|Mensagem enviada pelo correio","CEBOLA|Faz a gente chorar ao cortar","CERCA|Separa terrenos","CHÃO|Onde pisamos","CINTO|Segura a calça",
+"COCO|Fruto com água dentro","COLA|Gruda papel","COLHER|Talher para tomar sopa","CORDA|Usada para pular ou amarrar","CORUJA|Ave que enxerga à noite",
+"COUVE|Verdura da feijoada","CUBO|Dado tem esse formato","DADO|Cubo com pontos de 1 a 6","DOCE|Contrário de salgado","DONO|Proprietário",
+"DUCHA|Chuveiro forte","ESTOJO|Guarda lápis e borracha","FARDA|Uniforme militar","FEIRA|Mercado de rua","FERRO|Metal usado para passar roupa",
+"FILHO|Descendente dos pais","FITA|Tira de tecido para enfeitar","FOLHA|Parte verde da planta","FORNO|Assa o bolo","FRUTA|Banana e maçã são exemplos",
+"FUMAÇA|Sai do fogo","FUNDO|Contrário de raso","GELO|Água congelada","GIZ|Usado no quadro-negro","GOLFE|Esporte com taco e buraco",
+"GRAMA|Cobre o campo de futebol","GRITO|Fala muito alta","HORTA|Lugar onde se plantam verduras","IGREJA|Templo cristão","JACA|Fruta grande e cheirosa",
+"JOGO|Brincadeira com regras","LAGO|Água parada cercada de terra","LÁGRIMA|Sai do olho quando choramos","LATA|Embalagem de metal","LEQUE|Abana para refrescar",
+"LIXO|Vai para a lixeira","LOJA|Lugar onde se compra","LUVA|Veste a mão","MAPA|Desenho que mostra lugares","MARTELO|Bate no prego",
+"MEIA|Vai no pé, dentro do sapato","MOEDA|Dinheiro de metal","MOLA|Peça que estica e encolhe","MOTO|Veículo de duas rodas com motor","MUNDO|O planeta todo",
+"NOZ|Fruto seco de casca dura","ÔNIBUS|Transporte coletivo","ORELHA|Órgão da audição","OSSO|O cachorro adora roer","PANELA|Usada para cozinhar",
+"PAPEL|Folha para escrever","PATINS|Calçado com rodinhas","PEDRA|Rocha pequena","PEIXE|Nada no mar","PELE|Cobre o corpo",
+"PIA|Onde se lava a louça","PIÃO|Brinquedo que gira","PINGO|Gota pequena","POMBO|Ave comum nas praças","PONTE|Atravessa o rio",
+"POTE|Recipiente com tampa","PRAÇA|Espaço público com bancos","PULGA|Inseto que pula no cachorro","QUEIXO|Parte de baixo do rosto","RÁDIO|Aparelho que toca música e notícias",
+"RAIZ|Parte da planta embaixo da terra","REDE|Usada para pescar ou deitar","REMO|Faz o barco andar","ROUPA|O que vestimos","SACO|Embalagem de papel ou plástico",
+"SALADA|Prato de folhas e legumes","SAPO|Pula na lagoa","SELO|Cola na carta","SERRA|Ferramenta que corta madeira","SOFÁ|Assento estofado da sala",
+"TACO|Usado no beisebol","TELA|Parte do celular que mostramos","TERRA|Nosso planeta","TETO|Parte de cima do quarto","TIJOLO|Usado para construir paredes",
+"TINTA|Usada para pintar","TOURO|Macho da vaca","TRIGO|Grão da farinha do pão","TUBO|Cano","UNHA|Cresce na ponta do dedo",
+"URUBU|Ave preta que come carniça","VASO|Onde se planta uma flor","VIDRO|Material transparente da janela","VIOLÃO|Instrumento de seis cordas","VOVÓ|Mãe da mãe ou do pai",
+"ZEBRA|Animal listrado","ZERO|Número que vem antes do um","JUBA|Cabelo do leão","GELADO|Muito frio","PATO|Nada na lagoa e faz quá-quá"
+);
+BANCO.intermediario.push(
+"ABACATE|Fruta verde de caroço grande","ACADEMIA|Lugar para fazer musculação","AEROPORTO|Onde os aviões pousam","AGULHA|Usada para costurar","ALMOFADA|Travesseiro de sofá",
+"AMBULÂNCIA|Veículo que leva doentes","ANIVERSÁRIO|Comemoração do dia em que nasceu","APITO|O juiz usa para parar o jogo","ARANHA|Animal de oito patas que faz teia","ARMÁRIO|Móvel onde guardamos roupas",
+"ASTRONAUTA|Viaja em foguete","AVENIDA|Rua larga da cidade","BAILARINA|Dança balé","BALEIA|Maior animal do mundo","BANHEIRA|Onde se toma banho de imersão",
+"BARBEIRO|Corta cabelo e barba","BATERIA|Instrumento de percussão da banda","BIBLIOTECA|Lugar cheio de livros","BIGODE|Pelos acima da boca","BOLACHA|O mesmo que biscoito",
+"BORRACHA|Apaga o lápis","CABELEIREIRO|Cuida dos cabelos","CACHORRO|Animal que late","CADEIRA|Móvel para sentar","CALÇADA|Caminho do pedestre",
+"CALENDÁRIO|Mostra os dias do ano","CAMINHÃO|Veículo de carga","CAMISETA|Roupa de manga curta","CANGACEIRO|Seguidor de Lampião","CANJICA|Doce de milho das festas juninas",
+"CARACOL|Anda devagar e carrega a casa","CARANGUEJO|Anda de lado","CEGONHA|Ave que, na lenda, traz bebês","CENÁRIO|Ambiente de uma peça","CHAMINÉ|Por onde sai a fumaça",
+"CIDADE|Lugar com muitos prédios e ruas","CIGARRA|Inseto que canta no verão","COMPUTADOR|Máquina para trabalhar e jogar","COZINHA|Cômodo onde se faz comida","CRIANÇA|Pessoa pequena, menor de idade",
+"CURATIVO|Cobre um machucado","DESENHO|Arte feita com lápis","DOMINGO|Último dia do fim de semana","ENFERMEIRA|Ajuda o médico e cuida dos pacientes","ENVELOPE|Guarda a carta",
+"ESCORPIÃO|Animal com ferrão na cauda","ESPINAFRE|Verdura do Popeye","ESTÁDIO|Lugar dos jogos de futebol","FARMÁCIA|Vende remédios","FAZENDA|Propriedade rural",
+"FERRAMENTA|Martelo e alicate são exemplos","FOGUEIRA|Fogo da festa junina","FORMIGA|Inseto que trabalha em grupo","FOTOGRAFIA|Imagem tirada com câmera","GALINHA|Bota ovos",
+"GAVETA|Compartimento do armário que puxamos","GELADEIRA|Mantém a comida fria","GIRASSOL|Flor que segue o sol","GORILA|Grande primata africano","GRAVATA|Usada com terno",
+"HAMBÚRGUER|Sanduíche de carne moída","HELICÓPTERO|Aeronave com hélice em cima","HOSPITAL|Onde se tratam os doentes","IGREJA|Templo religioso","JACARANDÁ|Árvore de flores roxas",
+"JANTAR|Refeição da noite","JOANINHA|Besouro vermelho de pintas pretas","LAGARTIXA|Réptil pequeno que anda na parede","LÂMPADA|Ilumina a casa","LEOPARDO|Felino de pintas",
+"LIQUIDIFICADOR|Faz vitaminas e sucos","MACARRÃO|Massa italiana","MAQUIAGEM|Batom e base são exemplos","MARINHEIRO|Trabalha no navio","MEDALHA|Prêmio de quem vence",
+"MERCADO|Onde se compram alimentos","MINHOCA|Vive na terra e ajuda o solo","MOSQUITO|Inseto que pica","MOTORISTA|Dirige o veículo","MUSEU|Guarda obras de arte e história",
+"ÓCULOS|Ajudam a enxergar melhor","OLIMPÍADA|Maior evento esportivo do mundo","ORQUÍDEA|Flor delicada e cara","PALHAÇO|Artista do circo de nariz vermelho","PAPAGAIO|Ave que imita a fala",
+"PARAFUSO|Peça que se aperta com chave","PASSAPORTE|Documento de viagem internacional","PATINETE|Brinquedo com guidão e duas rodas","PEDREIRO|Constrói paredes","PERFUME|Deixa a pessoa cheirosa",
+"PESCADOR|Vive de pegar peixes","PIRÂMIDE|Construção egípcia","PISCINA|Tanque para nadar","POLVO|Animal marinho de oito braços","PREFEITO|Governa a cidade",
+"QUEIJADINHA|Doce de coco e queijo","RAPADURA|Doce de cana em tijolo","REFRIGERANTE|Bebida com gás","SABONETE|Usado no banho","SAPATEIRO|Conserta sapatos",
+"SATÉLITE|A Lua é o da Terra","SEMÁFORO|O mesmo que sinal de trânsito","SORVETE|Doce gelado de casquinha","TELEVISÃO|Aparelho que mostra novelas","TRAVESSEIRO|Apoia a cabeça na cama",
+"TRICICLO|Bicicleta de três rodas","UNIFORME|Roupa igual de todos da escola","UNIVERSO|Tudo o que existe no espaço","VASSOURA|Usada para varrer","VENTILADOR|Faz vento",
+"VIZINHO|Mora ao lado","VOLANTE|Usado para guiar o carro","XÍCARA|Onde se toma café","ZOOLÓGICO|Lugar onde visitamos animais","ESTRADA|Caminho entre cidades"
+);
+BANCO.dificil.push(
+"ABDÔMEN|Região da barriga","ACÚSTICA|Estudo do som","AFLUENTE|Rio que deságua em outro","ALVORADA|O raiar do dia","AMBIDESTRO|Usa bem as duas mãos",
+"ANALFABETO|Quem não sabe ler","ANFÍBIO|Vive na água e na terra","ANTÁRTIDA|Continente gelado do polo sul","APOSENTADORIA|Descanso remunerado após anos de trabalho","AQUARELA|Pintura com tinta diluída em água",
+"ARQUIBANCADA|Assentos do estádio","ARTÉRIA|Vaso que leva sangue do coração","ASTEROIDE|Corpo rochoso que orbita o Sol","AUTÓGRAFO|Assinatura de famoso","AVALANCHE|Deslizamento de neve",
+"BACTÉRIA|Micro-organismo de uma célula","BIOGRAFIA|História da vida de alguém","BIOMA|Cerrado e Caatinga são exemplos","CAATINGA|Bioma do sertão nordestino","CALEIDOSCÓPIO|Tubo de imagens coloridas que mudam",
+"CARNÍVORO|Que se alimenta de carne","CÉLULA|Menor unidade de um ser vivo","CENTÍMETRO|Centésima parte do metro","CERRADO|Savana do Brasil central","CIDADANIA|Exercício de direitos e deveres",
+"CIRCUNFERÊNCIA|Contorno do círculo","COLESTEROL|Gordura do sangue","COMBUSTÍVEL|Gasolina e álcool são exemplos","CONSTITUIÇÃO|Lei maior de um país","CRISÁLIDA|Fase da lagarta antes de virar borboleta",
+"CRONÔMETRO|Mede o tempo com precisão","DECIBEL|Unidade de intensidade do som","DESMATAMENTO|Derrubada de florestas","DIAFRAGMA|Músculo da respiração","DINOSSAURO|Réptil gigante extinto",
+"ECOSSISTEMA|Seres vivos e o ambiente onde vivem","ELEIÇÃO|Escolha por voto","EMBAIXADA|Representação de um país em outro","ENCICLOPÉDIA|Obra com conhecimentos de várias áreas","EPIDEMIA|Doença que se espalha numa região",
+"EROSÃO|Desgaste do solo pela água e vento","ESTALACTITE|Formação que pende do teto das cavernas","ESTÔMAGO|Órgão da digestão","FERMENTO|Faz o pão crescer","FÓSSIL|Resto de ser vivo preservado na rocha",
+"GEOLOGIA|Estudo das rochas","GERAÇÃO|Conjunto de pessoas da mesma época","GLACIAR|Massa de gelo que se move","HEMISFÉRIO|Metade da esfera terrestre","HERBÍVORO|Que come plantas",
+"HIDRELÉTRICA|Usina movida a água","HIPÓTESE|Suposição a ser testada","IMIGRANTE|Quem chega para morar em outro país","INFLAÇÃO|Alta geral dos preços","INSPIRAÇÃO|Entrada de ar nos pulmões",
+"INVERTEBRADO|Animal sem coluna","JUDICIÁRIO|Poder que julga","LEGISLATIVO|Poder que faz as leis","LUNETA|Pequeno telescópio","MAESTRO|Rege a orquestra",
+"MAMÍFERO|Animal que mama quando filhote","MARATONA|Corrida de 42 quilômetros","MEDITERRÂNEO|Mar entre a Europa e a África","MERIDIANO|Linha imaginária de polo a polo","METEORO|Estrela cadente",
+"MOLÉCULA|Conjunto de átomos ligados","MONARQUIA|Governo de rei ou rainha","NEBULOSA|Nuvem de gás e poeira no espaço","NEURÔNIO|Célula do sistema nervoso","NUTRIENTE|Substância que alimenta o corpo",
+"OBSERVATÓRIO|Lugar para estudar os astros","ONÍVORO|Come de tudo","ÓRBITA|Trajetória de um astro em volta de outro","OXIDAÇÃO|A ferrugem é um exemplo","PALEONTÓLOGO|Estuda fósseis",
+"PANDEMIA|Doença que se espalha pelo mundo","PARALELEPÍPEDO|Pedra do calçamento antigo","PATRIMÔNIO|Conjunto de bens","PEDIATRA|Médico de crianças","PERÍMETRO|Soma dos lados de uma figura",
+"PLANALTO|Terreno alto e plano","POLINIZAÇÃO|Transporte do pólen entre flores","PRESIDENTE|Chefe do Executivo","PRISMA|Decompõe a luz em cores","PSICÓLOGO|Cuida da saúde mental",
+"QUILÔMETRO|Mil metros","RADIAÇÃO|Energia emitida em ondas ou partículas","RECICLAGEM|Reaproveitamento de materiais","REFLORESTAMENTO|Plantio de árvores onde houve desmatamento","RELÂMPAGO|Clarão no céu durante a tempestade",
+"RESPIRAÇÃO|Troca de gases do organismo","SAMBÓDROMO|Passarela das escolas de samba","SATÍRICO|Que faz crítica com humor","SEMIÁRIDO|Clima seco do sertão","SENADOR|Membro do Senado",
+"SISMÓGRAFO|Mede terremotos","SOBERANIA|Autoridade suprema de um Estado","SUBSTANTIVO|Palavra que dá nome aos seres","TEMPERATURA|Medida de calor","TERMÔMETRO|Mede a febre",
+"TSUNAMI|Onda gigante causada por terremoto","TUNDRA|Vegetação rasteira das regiões geladas","VEREADOR|Faz leis no município","VERTEBRADO|Animal com coluna","VITAMINA|Nutriente das frutas"
+);
+BANCO.avancado.push(
+"ABJETO|Desprezível, baixo","ACINTE|Provocação deliberada","AFÃ|Grande empenho, ânsia","ALDRABÃO|Mentiroso, trapaceiro","ALUVIÃO|Depósito de sedimentos trazidos pelas águas",
+"AMÁLGAMA|Mistura de elementos diversos","ANÁTEMA|Excomunhão; reprovação enfática","APANÁGIO|Atributo próprio de alguém","APÓCRIFO|De autoria duvidosa","ÁRDUO|Difícil, penoso",
+"ASCETA|Quem vive com rigor e renúncia","ATÁVICO|Herdado dos antepassados","AZÁFAMA|Pressa, agitação","BAZÓFIA|Vaidade, fanfarronice","BEATITUDE|Felicidade serena",
+"BEÓCIO|Ignorante, tolo","BLANDICIOSO|Que lisonjeia com brandura","CÁUSTICO|Mordaz, sarcástico","CÉLERE|Veloz, rápido","CENOBITA|Monge que vive em comunidade",
+"CIRCUNSPECTO|Prudente, sério","COMEZINHO|Simples, banal","CONCUPISCÊNCIA|Desejo intenso de bens ou prazeres","CONSPÍCUO|Notável, que chama atenção","CONTUMAZ|Teimoso, reincidente",
+"DEBALDE|Em vão, inutilmente","DESPAUTÉRIO|Disparate, tolice","DILETANTE|Amador que pratica por gosto","DÍSPAR|Desigual, diferente","DOGMÁTICO|Que não admite contestação",
+"EMPÁFIA|Arrogância, soberba","ENGODO|Isca; artifício para enganar","ESCÁRNIO|Zombaria, desprezo","ESPÚRIO|Ilegítimo, falso","ESTOICO|Impassível diante da dor",
+"EXÍMIO|Excelente, notável","FASTIDIOSO|Enfadonho, maçante","FATÍDICO|Trágico, sinistro","FIDEDIGNO|Digno de fé, confiável","FUGAZ|Que passa rápido",
+"GÁRRULO|Tagarela","HEDIONDO|Horrível, repugnante","HOMIZIO|Esconderijo de foragido","IDÍLICO|Paradisíaco, sereno","IMBRÓGLIO|Confusão, trapalhada",
+"IMPERTÉRRITO|Sem medo, destemido","INCAUTO|Desprevenido, ingênuo","INCÓLUME|Ileso, sem dano","INDÔMITO|Que não se deixa dominar","INEXORÁVEL|Implacável, inflexível",
+"INÓSPITO|Que não acolhe, hostil","INSÍPIDO|Sem sabor","INSOSSO|Sem sal, sem graça","INTRÉPIDO|Corajoso","IRASCÍVEL|Que se irrita facilmente",
+"JACTÂNCIA|Vaidade, ostentação","JOCOSO|Engraçado, brincalhão","LÁBIL|Instável, que escorrega","LÉPIDO|Ágil, alegre","LÍMPIDO|Claro, transparente",
+"LOGRO|Engano, fraude","LÚGUBRE|Fúnebre, sombrio","MACAMBÚZIO|Calado e triste","MALEMOLÊNCIA|Gingado, moleza","MAVIOSO|Suave, harmonioso",
+"MESQUINHO|Avarento, pequeno de espírito","MOUCO|Que não ouve bem","NÉSCIO|Ignorante","NOSTÁLGICO|Saudoso do passado","OBLÍQUO|Inclinado; dissimulado",
+"OBSOLETO|Antiquado, fora de uso","OCIOSO|Desocupado","ONÍRICO|Relativo aos sonhos","OPULENTO|Rico, farto","OSTENSIVO|Que se mostra abertamente",
+"PANEGÍRICO|Discurso de elogio","PARCIMÔNIA|Moderação nos gastos","PATÉTICO|Que comove; ridículo","PERDULÁRIO|Gastador","PERENE|Que dura para sempre",
+"PLÁCIDO|Sereno, tranquilo","PRECÍPUO|Principal, essencial","PROBO|Honesto, íntegro","PROLE|Filhos, descendência","PROPEDÊUTICO|Introdutório, preparatório",
+"PUJANTE|Forte, vigoroso","QUIXOTESCO|Idealista e sonhador como Dom Quixote","RECÔNDITO|Oculto, escondido","REFRATÁRIO|Que resiste; rebelde","RÚSTICO|Do campo; sem refinamento",
+"SAGAZ|Esperto, perspicaz","SALOBRO|Levemente salgado","SOLERTE|Astuto, diligente","SOTURNO|Sombrio, melancólico","SUCINTO|Breve, resumido",
+"TÁCITO|Implícito, não dito","TACITURNO|Calado, tristonho","TÊNUE|Fino, delicado","TORPE|Vil, indecente","TRUCULENTO|Cruel, violento",
+"VEEMENTE|Intenso, enérgico","VERBORRAGIA|Excesso de palavras","VILIPENDIAR|Desprezar, humilhar","VOLÚVEL|Inconstante","ZELOSO|Cuidadoso, dedicado"
+);
+
 /* ===================== GERADOR DE PALAVRAS CRUZADAS =====================
    Cada jogo é definido por (nível, semente). A mesma semente sempre gera o
    mesmo tabuleiro, então um duelo só precisa guardar o nível e a semente.  */
 const NIVEIS = {
-  facil:         { key:'facil',         nome:'Fácil',         pontos:1, palavras:6,  max:9,  revelar:'primeira', dicas:3, prefixo:'F', salt:11 },
-  intermediario: { key:'intermediario', nome:'Intermediário', pontos:2, palavras:8,  max:12, revelar:0.15,       dicas:2, prefixo:'I', salt:23 },
-  dificil:       { key:'dificil',       nome:'Difícil',       pontos:3, palavras:10, max:14, revelar:0,          dicas:1, prefixo:'D', salt:37 },
-  avancado:      { key:'avancado',      nome:'Avançado',      pontos:4, palavras:12, max:16, revelar:0,          dicas:1, prefixo:'A', salt:53 }
+  facil:         { key:'facil',         nome:'Fácil',         pontos:1, palavras:6,  max:9,  revelar:'primeira', dicas:5, prefixo:'F', salt:11 },
+  intermediario: { key:'intermediario', nome:'Intermediário', pontos:4, palavras:8,  max:12, revelar:0.15,       dicas:5, prefixo:'I', salt:23 },
+  dificil:       { key:'dificil',       nome:'Difícil',       pontos:10, palavras:10, max:14, revelar:0,          dicas:5, prefixo:'D', salt:37 },
+  avancado:      { key:'avancado',      nome:'Avançado',      pontos:20, palavras:12, max:16, revelar:0,          dicas:5, prefixo:'A', salt:53 }
 };
 const SEMENTES_POR_NIVEL = 100000; // jogos possíveis por nível (verificados > 5.000 distintos)
 
@@ -486,7 +587,9 @@ function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.im
 function embaralha(arr,rnd){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
 
 const BANCOS = {};
-for (const k in BANCO) BANCOS[k] = BANCO[k].map(s => { const i=s.indexOf('|'); return { original:s.slice(0,i), word:normaliza(s.slice(0,i)), clue:s.slice(i+1) }; });
+for (const k in BANCO) { const vistos=new Set(); BANCOS[k] = BANCO[k].map(s => { const i=s.indexOf('|'); return { original:s.slice(0,i), word:normaliza(s.slice(0,i)), clue:s.slice(i+1) }; }).filter(w => !vistos.has(w.word) && vistos.add(w.word)); }
+/** Penalidade acumulada das dicas: 15 s, depois dobra (15, 30, 60, 120, 240). */
+function penalidadeDicas(n){ return 15000*(Math.pow(2,Math.min(n,5))-1); }
 
 function tentaMontar(pool, L, rnd){
   const N=48, grid=new Map(), placed=[];
@@ -544,11 +647,12 @@ function tentaMontar(pool, L, rnd){
   return { placed, minR, maxR, minC, maxC };
 }
 
-function gerarJogo(nivel, semente){
+function gerarJogo(nivel, semente, evitar){
   const L=NIVEIS[nivel];
   for(let t=0;t<60;t++){
     const rnd=mulberry32(((semente+1)*2654435761 ^ (t+1)*40503 ^ L.salt*97)>>>0);
-    const pool=embaralha(BANCOS[nivel].slice(),rnd);
+    let pool=embaralha(BANCOS[nivel].slice(),rnd);
+    if(evitar&&evitar.size&&t<40){ const ev=new Set(evitar); pool=pool.filter(w=>!ev.has(w.word)).concat(pool.filter(w=>ev.has(w.word))); }
     const res=tentaMontar(pool,L,rnd);
     if(!res) continue;
     const rows=res.maxR-res.minR+1, cols=res.maxC-res.minC+1;
@@ -573,8 +677,8 @@ function gerarJogo(nivel, semente){
    Usado só quando API_URL está vazio: imita o backend do Apps Script
    guardando tudo no navegador, com alguns jogadores fictícios.       */
 const LocalAPI = (() => {
-  const K = 'pc_demo_db_v1';
-  const CFG = { PONTOS:{facil:1,intermediario:2,dificil:3,avancado:4}, BONUS:5, PEN:2, VIT:10, DER:5, SEG_DICA:15, PRAZO:3 };
+  const K = 'pc_demo_db_v2';
+  const CFG = { PONTOS:{facil:1,intermediario:4,dificil:10,avancado:20}, BONUS:5, PEN:2, VIT:10, DER:5, SEG_DICA:15, PRAZO:3 };
   const hoje = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(new Date());
   const agora = () => new Date().toISOString().slice(0,19);
   const diff = (a,b) => Math.round((Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/86400000);
@@ -586,8 +690,8 @@ const LocalAPI = (() => {
     if (lido) db = lido;
     if (!db) {
       db = { users:[], log:[], duels:[] };
-      const bots = [['ana.letras','Ana Letras',2150],['joao_cruz','João Cruz',1360],['bia.verbo','Bia Verbo',930],['caio','Caio M.',470],
-                    ['lu_quiz','Lu Quiz',300],['pedro.p','Pedro P.',170],['marina','Marina',85],['tom','Tom',32],['rafa','Rafa',9]];
+      const bots = [['ana.letras','Ana Letras',8350],['joao_cruz','João Cruz',5200],['bia.verbo','Bia Verbo',3300],['caio','Caio M.',1250],
+                    ['lu_quiz','Lu Quiz',720],['pedro.p','Pedro P.',380],['marina','Marina',160],['tom','Tom',55],['rafa','Rafa',9]];
       for (const [u,n,p] of bots) db.users.push({ username:u, nome:n, senha:'', token:'', pontos:p, criadoEm:hoje(), ultimoDia:hoje(), penalizadoAte:'',
         sequencia:Math.floor(Math.random()*12), melhorSequencia:14, partidas:Math.floor(p/3), vitorias:Math.floor(p/120), derrotas:Math.floor(p/200), bot:true });
     }
@@ -602,21 +706,21 @@ const LocalAPI = (() => {
     if (u.bot) { u.ultimoDia = hoje(); return; }
     const h = hoje(); let base = u.ultimoDia || u.criadoEm; if (u.penalizadoAte && u.penalizadoAte > base) base = u.penalizadoAte;
     const f = diff(base,h)-1; if (f <= 0) return;
-    const perda = Math.min(Math.max(u.pontos,0), f*CFG.PEN);
+    let perda = 0; for (let k=0;k<Math.min(f,365);k++){ const s=u.pontos-perda; if(s<=0) break; perda+=Math.min(s,penalidadeDia(s)); }
     u.pontos -= perda; u.penalizadoAte = soma(h,-1); u.sequencia = 0;
     if (perda > 0) log(u.username,'penalidade','','',-perda,u.pontos,f+' dia(s) sem jogar');
   }
   function marcaDia(u){
     const h = hoje(); if (u.ultimoDia === h) return 0;
     u.sequencia = (u.ultimoDia && diff(u.ultimoDia,h) === 1) ? u.sequencia+1 : 1;
-    u.melhorSequencia = Math.max(u.sequencia, u.melhorSequencia); u.ultimoDia = h; u.pontos += CFG.BONUS; return CFG.BONUS;
+    u.melhorSequencia = Math.max(u.sequencia, u.melhorSequencia); u.ultimoDia = h; const b = bonusDiario(u.sequencia); u.pontos += b; return b;
   }
   function dpub(d, eu){
     const a = d.desafiante === eu;
     const op = acha(a ? d.desafiado : d.desafiante);
     return { id:d.id, criadoEm:d.criadoEm, nivel:d.nivel, semente:d.semente, desafiante:d.desafiante, desafiado:d.desafiado, status:d.status, souDesafiante:a,
       meuTempo: a ? d.msA : d.msB, tempoOponente: d.status==='finalizado' ? (a ? d.msB : d.msA) : null, oponenteTerminou: (a ? d.msB : d.msA) != null,
-      comecei: (a ? d.iniA : d.iniB) != null, vencedor:d.vencedor||'', finalizadoEm:d.finalizadoEm||'', nomeOponente: op ? op.nome : '' };
+      comecei: (a ? d.iniA : d.iniB) != null, vencedor:d.vencedor||'', finalizadoEm:d.finalizadoEm||'', ganho:d.ganho||0, perda:d.perda||0, nomeOponente: op ? op.nome : '' };
   }
   function resolve(d){
     if (!['pendente','aceito'].includes(d.status)) return;
@@ -631,8 +735,9 @@ const LocalAPI = (() => {
     d.status = 'finalizado'; d.vencedor = v; d.finalizadoEm = agora();
     if (v === 'empate') return;
     const uv = acha(v), up = acha(p);
-    if (uv) { uv.pontos += CFG.VIT; uv.vitorias++; log(uv.username,'duelo',d.nivel,'duelo:'+d.id,CFG.VIT,uv.pontos,'Vitória contra '+p); }
-    if (up) { up.pontos -= CFG.DER; up.derrotas++; log(up.username,'duelo',d.nivel,'duelo:'+d.id,-CFG.DER,up.pontos,'Derrota para '+v); }
+    const val = valoresDuelo(d.nivel, uv?uv.pontos:0, up?up.pontos:0); d.ganho = val.ganho; d.perda = val.perda;
+    if (uv) { uv.pontos += val.ganho; uv.vitorias++; log(uv.username,'duelo',d.nivel,'duelo:'+d.id,val.ganho,uv.pontos,'Vitória contra '+p); }
+    if (up) { up.pontos -= val.perda; up.derrotas++; log(up.username,'duelo',d.nivel,'duelo:'+d.id,-val.perda,up.pontos,'Derrota para '+v); }
   }
   const tempoBot = n => ({facil:[35,140],intermediario:[80,260],dificil:[150,420],avancado:[220,620]}[n]).reduce((a,b)=>a+Math.random()*(b-a)) * 1000 | 0;
   const A = {
@@ -703,7 +808,7 @@ const LocalAPI = (() => {
       const a = d.desafiante === u.username;
       if ((a ? d.msA : d.msB) != null) return { ok:true, repetido:true, duelo:dpub(d,u.username), user:pub(u) };
       const ini = a ? d.iniA : d.iniB; if (ini == null) throw new Error('Duelo não iniciado.');
-      const ms = r.desistiu ? 99999999 : (Date.now()-ini) + Math.max(0,r.dicas|0)*CFG.SEG_DICA*1000;
+      const ms = r.desistiu ? 99999999 : (Date.now()-ini) + penalidadeDicas(Math.max(0,r.dicas|0));
       if (a) d.msA = ms; else d.msB = ms;
       let b = 0; if (!r.desistiu) { liquida(u); b = marcaDia(u); if (b) log(u.username,'bonus','','',b,u.pontos,'Meta diária'); }
       resolve(d);
@@ -716,17 +821,23 @@ const LocalAPI = (() => {
 /* ===================== CATEGORIAS E EMBLEMAS ===================== */
 const TIERS = [
   { nome:'Ferro',               min:-Infinity, c1:'#8fc1e3', c2:'#2f5373', forma:'escudo', perks:['Emblema de Ferro','Entrada no ranking'] },
-  { nome:'Bronze',              min:30,   c1:'#e8a96d', c2:'#8a4b1f', forma:'escudo', perks:['Moldura de bronze no ranking','Anel bronze no avatar'] },
-  { nome:'Prata',               min:80,   c1:'#eef2ff', c2:'#6b7a99', forma:'escudo', estrela:true, perks:['Nome com degradê prateado','Estrela no emblema'] },
-  { nome:'Ouro',                min:160,  c1:'#ffd94a', c2:'#b7791f', forma:'escudo', estrela:true, coroa:true, perks:['Coroa dourada ao lado do nome','Avatar com aura dourada','Faixa dourada no ranking'] },
-  { nome:'Platina',             min:280,  c1:'#9be7f2', c2:'#3a8fa3', forma:'hexagono', perks:['Brilho deslizante no cartão','Emblema hexagonal'] },
-  { nome:'Esmeralda',           min:450,  c1:'#5eead4', c2:'#047857', forma:'hexagono', estrela:true, perks:['Aura verde esmeralda','Brilho no cartão'] },
-  { nome:'Rubi',                min:650,  c1:'#fb7185', c2:'#9f1239', forma:'gema', perks:['Avatar com aura pulsante','Cartão rubi'] },
-  { nome:'Diamante',            min:900,  c1:'#93c5fd', c2:'#1d4ed8', forma:'gema', coroa:true, perks:['Diamante lapidado no emblema','Aura azul pulsante'] },
-  { nome:'Mestre das Palavras', min:1300, c1:'#c4b5fd', c2:'#6d28d9', forma:'estrela', asas:true, perks:['Asas no emblema','Título de Mestre','Cartão violeta brilhante'] },
-  { nome:'Lenda do Dicionário', min:2000, c1:'#fbbf24', c2:'#dc2626', forma:'estrela', asas:true, coroa:true, perks:['Moldura de fogo animada','Coroa + asas lendárias','O topo da glória'] }
+  { nome:'Bronze',              min:50,   c1:'#e8a96d', c2:'#8a4b1f', forma:'escudo', perks:['Moldura de bronze no ranking','Anel bronze no avatar'] },
+  { nome:'Prata',               min:150,  c1:'#eef2ff', c2:'#6b7a99', forma:'escudo', estrela:true, perks:['Nome com degradê prateado','Estrela no emblema'] },
+  { nome:'Ouro',                min:350,  c1:'#ffd94a', c2:'#b7791f', forma:'escudo', estrela:true, coroa:true, perks:['Coroa dourada ao lado do nome','Avatar com aura dourada','Faixa dourada no ranking'] },
+  { nome:'Platina',             min:700,  c1:'#9be7f2', c2:'#3a8fa3', forma:'hexagono', perks:['Brilho deslizante no cartão','Emblema hexagonal'] },
+  { nome:'Esmeralda',           min:1200, c1:'#5eead4', c2:'#047857', forma:'hexagono', estrela:true, perks:['Aura verde esmeralda','Brilho no cartão'] },
+  { nome:'Rubi',                min:2000, c1:'#fb7185', c2:'#9f1239', forma:'gema', perks:['Avatar com aura pulsante','Cartão rubi'] },
+  { nome:'Diamante',            min:3200, c1:'#93c5fd', c2:'#1d4ed8', forma:'gema', coroa:true, perks:['Diamante lapidado no emblema','Aura azul pulsante'] },
+  { nome:'Mestre das Palavras', min:5000, c1:'#c4b5fd', c2:'#6d28d9', forma:'estrela', asas:true, perks:['Asas no emblema','Título de Mestre','Cartão violeta brilhante'] },
+  { nome:'Lenda do Dicionário', min:8000, c1:'#fbbf24', c2:'#dc2626', forma:'estrela', asas:true, coroa:true, perks:['Moldura de fogo animada','Coroa + asas lendárias','O topo da glória'] }
 ];
 function tierIdx(p){ let i=0; TIERS.forEach((t,k)=>{ if(p>=t.min) i=k; }); return i; }
+/* Balanceamento (igual ao Code.gs) */
+const DUELO_BASE = { facil:8, intermediario:15, dificil:30, avancado:50 };
+function bonusDiario(seq){ return 10 + 2*Math.min(Math.max(seq-1,0),10); }
+function penalidadeDia(saldo){ return Math.min(60, Math.max(5, Math.round(saldo*0.01))); }
+function valoresDuelo(nivel, pv, pp){ const m=Math.min(2,Math.max(0.5,1+0.25*(tierIdx(pp)-tierIdx(pv)))), b=DUELO_BASE[nivel]||8; return { ganho:Math.round(b*m), perda:Math.round(b/2*m) }; }
+function proxBonus(){ if(!S.user) return 10; const h=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(new Date()); const ontem=new Date(Date.parse(h+'T00:00:00Z')-864e5).toISOString().slice(0,10); return bonusDiario(S.user.ultimoDia===ontem?S.user.sequencia+1:1); }
 let _gid=0;
 function emblema(i, size=40){
   const t=TIERS[i], id='g'+(++_gid);
@@ -788,7 +899,7 @@ function renderUser(){
   const i=tierIdx(S.user.pontos);
   a.innerHTML=`<button class="chip" id="btnMe" style="${tvars(i)}" title="${TIERS[i].nome}">${emblema(i,28)}<span class="nm">${esc(S.user.nome)}</span><span class="pts">${S.user.pontos}</span></button>`;
   $('#btnMe').onclick=()=>modal(`<div class="centro">${emblema(i,72)}<h2 style="margin-top:8px">${esc(S.user.nome)}</h2><p class="muted">@${esc(S.user.username)} · ${TIERS[i].nome} · ${S.user.pontos} pontos</p>
-    <p>${S.user.jogouHoje?'✅ Meta diária cumprida hoje':'🎯 Jogue hoje para ganhar +5 da meta diária'}</p>
+    <p>${S.user.jogouHoje?'✅ Meta diária cumprida hoje':`🎯 Jogue hoje para ganhar +${proxBonus()} da meta diária`}</p>
     <button class="btn sec" onclick="fechaModal()">Fechar</button> <button class="btn bad" onclick="sair()">Sair</button></div>`);
 }
 function sair(silencioso){ if(document.body.classList.contains('foco')) saiFoco(); S.token=null; S.user=null; store.del('pc_token'); renderUser(); fechaModal(); if(!silencioso) toast('Você saiu.'); if(S.modo==='duelo') saiFoco(); else renderNiveis(); if(S.view!=='jogar') mostra(S.view); }
@@ -809,7 +920,7 @@ function abreAuth(aba='entrar'){
     try{
       const r = await api(aba==='criar'?'register':'login', { nome:f.get('nome'), username:f.get('username'), senha:f.get('senha') });
       S.token=r.token; store.set('pc_token',r.token); fechaModal(); toast(aba==='criar'?'Bem-vindo(a), '+r.user.nome+'!':'Olá de novo, '+r.user.nome+'!');
-      atualizaDuelosBadge(); renderNiveis(); if(S.view!=='jogar') mostra(S.view);
+      atualizaDuelosBadge(); renderNiveis(); if(S.view!=='jogar') mostra(S.view); retomaPartida();
     }catch(err){ $('#authErr').textContent=err.message; btn.disabled=false; }
   };
 }
@@ -832,7 +943,7 @@ function renderNiveis(){
     dificil:'Grade até 14×14 · 10 palavras longas · sem letras de dica', avancado:'Grade até 16×16 · 12 palavras raras e eruditas · sem letras de dica' };
   $('#niveis').innerHTML=Object.values(NIVEIS).map((L,k)=>`<button class="nivel" data-n="${L.key}"><span class="p">${L.pontos} pt${L.pontos>1?'s':''}</span><b>${L.nome}</b><div class="dots">${'●'.repeat(k+1)}${'○'.repeat(3-k)}</div><small>${desc[L.key]}</small><span class="go">Jogar →</span></button>`).join('');
   document.querySelectorAll('.nivel').forEach(b=>b.onclick=()=>{ S.nivel=b.dataset.n; store.set('pc_nivel',S.nivel); novoJogo(); });
-  $('#lobbyInfo').innerHTML = S.user ? (S.user.jogouHoje ? '✅ Meta diária de hoje cumprida. Continue jogando para subir no ranking.' : '🎯 Conclua uma partida hoje para ganhar <b>+5</b> da meta diária.') : 'Cada partida é sorteada entre milhares de jogos diferentes. Crie um usuário para somar pontos.';
+  $('#lobbyInfo').innerHTML = S.user ? (S.user.jogouHoje ? '✅ Meta diária de hoje cumprida. Continue jogando para subir no ranking.' : `🎯 Conclua uma partida hoje para ganhar <b>+${proxBonus()}</b> da meta diária${S.user.sequencia?` (sequência de ${S.user.sequencia} dia${S.user.sequencia>1?'s':''} 🔥)`:''}.`) : 'Cada partida é sorteada entre milhares de jogos diferentes. Crie um usuário para somar pontos.';
 }
 function entraFoco(){ $('#partida').classList.add('on'); document.body.classList.add('foco'); requestAnimationFrame(ajustaTamanho); }
 function saiFoco(){ $('#partida').classList.remove('on'); document.body.classList.remove('foco'); $('#painelPistas').classList.remove('aberto'); clearInterval(S.timer); S.modo='normal'; S.duelo=null; S.jogo=null; renderNiveis(); }
@@ -848,26 +959,58 @@ addEventListener('resize', ajustaTamanho);
     if(k==='del') apagar(true); else if(k==='next') pulaPalavra(1); else letra(k); });
 })();
 function chaveJogados(){ return 'pc_jogados_'+(S.user?S.user.username:'_')+'_'+S.nivel; }
+function chaveRecentes(){ return 'pc_recentes_'+(S.user?S.user.username:'_')+'_'+S.nivel; }
+function chavePartida(){ return 'pc_partida_'+(S.user?S.user.username:'_'); }
 function novoJogo(){
   S.modo='normal'; S.duelo=null;
   const jog=new Set(store.get(chaveJogados(),[]));
   let s; for(let k=0;k<80;k++){ s=Math.floor(Math.random()*SEMENTES_POR_NIVEL); if(!jog.has(s)) break; }
-  iniciaJogo(gerarJogo(S.nivel,s), Date.now());
+  // evita as palavras usadas nas últimas partidas deste nível
+  const rec=store.get(chaveRecentes(),[]), g=gerarJogo(S.nivel,s,new Set(rec));
+  const lim=Math.floor(BANCOS[S.nivel].length*0.6);
+  store.set(chaveRecentes(), rec.concat(g.palavras.map(p=>p.word)).slice(-lim));
+  iniciaJogo(g, Date.now());
+}
+/* ---- progresso salvo: sair/recarregar a página não apaga o que foi digitado ---- */
+function serializa(g){ return { ...g, revelada:[...g.revelada] }; }
+function desserializa(o){ return { ...o, revelada:new Set(o.revelada) }; }
+function salvaProgresso(){
+  if(!S.jogo||!S.user) return;
+  const prog={ ent:S.ent, dicas:S.dicas, ajuda:S.ajuda||[] };
+  if(S.modo==='duelo'){ store.set('pc_duelo_'+S.duelo.id, prog); store.set(chavePartida(), { modo:'duelo', duelo:S.duelo }); }
+  else store.set(chavePartida(), { modo:'normal', jogo:serializa(S.jogo), inicio:S.inicio, ...prog });
+}
+function limpaProgresso(){ if(S.modo==='duelo'&&S.duelo) store.del('pc_duelo_'+S.duelo.id); store.del(chavePartida()); }
+function aplicaProgresso(prog){
+  if(!prog) return;
+  S.dicas=prog.dicas||0; S.ajuda=prog.ajuda||[];
+  Object.entries(prog.ent||{}).forEach(([k,v])=>{ if(!v) return; const [r,c]=k.split(',').map(Number); if(S.mapa[k]) setCel(r,c,v); });
+  S.ajuda.forEach(k=>{ const el=document.querySelector(`#board .cel[data-k="${k}"]`); if(el) el.classList.add('ajuda'); });
+  atualizaDica(); marcaFeitas(); verificaCheia(false);
+}
+async function retomaPartida(){
+  const sv=store.get(chavePartida(),null); if(!sv) return;
+  try{
+    if(sv.modo==='duelo'){ await jogaDuelo(sv.duelo); toast('Duelo retomado. O tempo continuou contando.'); }
+    else { S.modo='normal'; S.duelo=null; S.nivel=sv.jogo.nivel; iniciaJogo(desserializa(sv.jogo), sv.inicio); aplicaProgresso(sv); toast('Partida retomada de onde você parou.'); }
+  }catch(e){ store.del(chavePartida()); }
 }
 function iniciaJogo(g, inicio){
-  S.jogo=g; S.ent={}; S.fim=false; S.dicas=0; S.inicio=inicio;
+  S.jogo=g; S.ent={}; S.fim=false; S.dicas=0; S.ajuda=[]; S.inicio=inicio; S.at=null;
   S.mapa={}; g.palavras.forEach((p,i)=>{ for(let k=0;k<p.word.length;k++){ const r=p.r+(p.dir==='V'?k:0), c=p.c+(p.dir==='H'?k:0), key=r+','+c; (S.mapa[key]=S.mapa[key]||{})[p.dir]=i; } });
   entraFoco(); renderBoard(); renderPistas(); ajustaTamanho();
   $('#jogoNivel').textContent=(S.modo==='duelo'?'⚔️ Duelo · ':'')+NIVEIS[g.nivel].nome; $('#jogoId').textContent='#'+g.id;
   const ban=$('#duelBan');
-  if(S.modo==='duelo'){ const d=S.duelo; ban.innerHTML=`⚔️ Duelo contra ${esc(d.nomeOponente||(d.souDesafiante?d.desafiado:d.desafiante))}: termine o mais rápido possível! Cada dica soma +15 s.`; ban.classList.add('on'); }
+  if(S.modo==='duelo'){ const d=S.duelo; ban.innerHTML=`⚔️ Duelo contra ${esc(d.nomeOponente||(d.souDesafiante?d.desafiado:d.desafiante))}: termine o mais rápido possível! Dicas somam tempo: 15 s, depois 30, 60, 120 e 240 s.`; ban.classList.add('on'); }
   else ban.classList.remove('on');
   atualizaDica();
-  clearInterval(S.timer); S.timer=setInterval(()=>{ if(!S.fim) $('#tempo').textContent=fmtT(Date.now()-S.inicio); },500);
-  $('#tempo').textContent=fmtT(Date.now()-S.inicio);
-  const p=g.palavras[0]; selec(p.r,p.c,p.dir,false);
+  clearInterval(S.timer); S.timer=setInterval(()=>{ if(!S.fim) $('#tempo').textContent=fmtT(tempoAtual()); },500);
+  $('#tempo').textContent=fmtT(tempoAtual());
+  const p=g.palavras[0]; selec(p.r,p.c,p.dir,true);
+  salvaProgresso();
 }
-function atualizaDica(){ const L=NIVEIS[S.jogo.nivel], rest=L.dicas-S.dicas; $('#dicaN').textContent=rest; $('#btnDica').disabled=rest<=0||S.fim; $('#btnVerificar').disabled=S.fim; $('#btnDesistir').disabled=S.fim; }
+function tempoAtual(){ return Date.now()-S.inicio+penalidadeDicas(S.dicas); }
+function atualizaDica(){ const L=NIVEIS[S.jogo.nivel], rest=L.dicas-S.dicas; $('#dicaN').textContent=rest; $('#btnDica').title=rest>0?`Dica: revela uma letra (+${penalidadeDicas(S.dicas+1)/1000-penalidadeDicas(S.dicas)/1000} s no tempo)`:'Sem dicas restantes'; $('#btnDica').disabled=rest<=0||S.fim; $('#btnVerificar').disabled=S.fim; $('#btnDesistir').disabled=S.fim; }
 function renderBoard(){
   const g=S.jogo, b=$('#board'); b.style.setProperty('--cols',g.cols); let h='';
   for(let r=0;r<g.rows;r++) for(let c=0;c<g.cols;c++){
@@ -881,7 +1024,7 @@ function renderBoard(){
     const inp=el.querySelector('input'), [r,c]=el.dataset.k.split(',').map(Number);
     inp.addEventListener('mousedown',e=>{ e.preventDefault(); clique(r,c); });
     inp.addEventListener('touchend',e=>{ e.preventDefault(); clique(r,c); });
-    inp.addEventListener('focus',()=>{ inp.select(); if(!S.at||S.at[0]!==r||S.at[1]!==c) selec(r,c,S.dir,false); });
+    inp.addEventListener('focus',()=>{ inp.select(); if(!S.at) selec(r,c,S.dir,false); else if(S.at[0]!==r||S.at[1]!==c){ const q=document.querySelector(`#board .cel[data-k="${S.at.join(',')}"] input`); if(q) q.focus({preventScroll:true}); } });
     inp.addEventListener('keydown',e=>tecla(e,r,c));
     inp.addEventListener('input',()=>digita(inp,r,c));
   });
@@ -891,16 +1034,19 @@ function renderPistas(){
   ['H','V'].forEach(d=>{
     $('#p'+d).innerHTML=g.palavras.map((p,i)=>p.dir!==d?'':`<li data-i="${i}"><b>${p.num}</b><span>${esc(p.clue)} <em>(${p.word.length})</em></span></li>`).join('');
   });
-  document.querySelectorAll('.pistas li').forEach(li=>li.onclick=()=>{ const p=g.palavras[+li.dataset.i]; const k=primeiraVazia(p); selec(k[0],k[1],p.dir,true); $('#painelPistas').classList.remove('aberto'); });
+  document.querySelectorAll('.pistas li').forEach(li=>li.onclick=()=>{ const p=g.palavras[+li.dataset.i]; selec(p.r,p.c,p.dir,true); $('#painelPistas').classList.remove('aberto'); });
 }
 function cellsDe(p){ const a=[]; for(let k=0;k<p.word.length;k++) a.push([p.r+(p.dir==='V'?k:0), p.c+(p.dir==='H'?k:0)]); return a; }
 function primeiraVazia(p){ return cellsDe(p).find(([r,c])=>!S.ent[r+','+c]) || [p.r,p.c]; }
 function palavraAtual(){ if(!S.at) return null; const m=S.mapa[S.at.join(',')]; const i=m[S.dir]!=null?m[S.dir]:m[S.dir==='H'?'V':'H']; return S.jogo.palavras[i]; }
 function clique(r,c){
-  const m=S.mapa[r+','+c]; let d=S.dir;
-  if(S.at&&S.at[0]===r&&S.at[1]===c){ if(m.H!=null&&m.V!=null) d=d==='H'?'V':'H'; }
+  const m=S.mapa[r+','+c], atual=palavraAtual();
+  const naAtual = atual && cellsDe(atual).some(([rr,cc])=>rr===r&&cc===c);
+  if(naAtual && !(S.at[0]===r&&S.at[1]===c)){ selec(r,c,S.dir,true); return; }   // 2º toque: move dentro da palavra
+  let d=S.dir;
+  if(naAtual){ if(m.H!=null&&m.V!=null) d=d==='H'?'V':'H'; else { selec(r,c,d,true); return; } } // mesmo quadrado: troca a direção
   else if(m[d]==null) d=d==='H'?'V':'H';
-  selec(r,c,d,true);
+  const p=S.jogo.palavras[m[d]]; selec(p.r,p.c,p.dir,true);                       // 1º toque: vai para a 1ª letra
 }
 function selec(r,c,d,foca=true){
   const m=S.mapa[r+','+c]; if(!m) return;
@@ -913,7 +1059,7 @@ function selec(r,c,d,foca=true){
   $('#pistaAtual').innerHTML=`<b>${p.num} ${p.dir==='H'?'Horizontal':'Vertical'}</b><span>${esc(p.clue)} (${p.word.length})</span>`;
   if(foca&&!TOUCH){ const inp=document.querySelector(`#board .cel[data-k="${r},${c}"] input`); if(inp&&document.activeElement!==inp) inp.focus({preventScroll:true}); else if(inp) inp.select(); }
 }
-function setCel(r,c,ch){ const k=r+','+c; S.ent[k]=ch; const el=document.querySelector(`#board .cel[data-k="${k}"]`); el.querySelector('input').value=ch; el.classList.remove('erro'); el.classList.toggle('cheia',!!ch); }
+function setCel(r,c,ch){ const k=r+','+c; S.ent[k]=ch; const el=document.querySelector(`#board .cel[data-k="${k}"]`); el.querySelector('input').value=ch; el.classList.remove('erro'); el.classList.toggle('cheia',!!ch); salvaProgresso(); }
 function avanca(passo){
   const p=palavraAtual(), cs=cellsDe(p); let i=cs.findIndex(([r,c])=>r===S.at[0]&&c===S.at[1]);
   for(let t=0;t<cs.length;t++){ i+=passo; if(i<0||i>=cs.length) return; selec(cs[i][0],cs[i][1],S.dir); return; }
@@ -948,21 +1094,38 @@ function marcaFeitas(){
   document.querySelectorAll('.pistas li').forEach(li=>{ const p=S.jogo.palavras[+li.dataset.i]; li.classList.toggle('feito', cellsDe(p).every(([r,c])=>S.ent[r+','+c])); });
 }
 function correto(){ return S.jogo.palavras.every(p=>cellsDe(p).every(([r,c])=>S.ent[r+','+c]===S.jogo.cells[r][c].ch)); }
-function checaFim(){ if(!S.fim && correto()) conclui(false); }
+function checaFim(){ if(S.fim) return; if(correto()) conclui(false); else verificaCheia(true); }
+/** Com a grade toda preenchida, aponta quais palavras estão erradas. */
+function verificaCheia(avisa){
+  const g=S.jogo; document.querySelectorAll('.pistas li.errada').forEach(li=>li.classList.remove('errada'));
+  const cheia=g.palavras.every(p=>cellsDe(p).every(([r,c])=>S.ent[r+','+c]));
+  if(!cheia) return;
+  const erradas=g.palavras.filter(p=>cellsDe(p).some(([r,c])=>S.ent[r+','+c]!==g.cells[r][c].ch));
+  erradas.forEach(p=>{
+    document.querySelector(`.pistas li[data-i="${g.palavras.indexOf(p)}"]`).classList.add('errada');
+    cellsDe(p).forEach(([r,c])=>{ if(S.ent[r+','+c]!==g.cells[r][c].ch) document.querySelector(`#board .cel[data-k="${r},${c}"]`).classList.add('erro'); });
+  });
+  if(avisa && erradas.length){
+    const nomes=erradas.map(p=>`${p.num} ${p.dir==='H'?'Horizontal':'Vertical'}`);
+    toast(`Grade completa, mas ${erradas.length>1?'estas palavras estão erradas':'esta palavra está errada'}: ${nomes.join(', ')}`);
+    const p=erradas[0], [r,c]=cellsDe(p).find(([r,c])=>S.ent[r+','+c]!==g.cells[r][c].ch); selec(r,c,p.dir,true);
+  }
+}
 
 $('#btnVerificar').onclick=()=>{
   let erros=0, vazias=0;
   document.querySelectorAll('#board .cel.v').forEach(el=>{ const k=el.dataset.k, [r,c]=k.split(',').map(Number), v=S.ent[k];
     if(!v) vazias++; else if(v!==S.jogo.cells[r][c].ch){ erros++; el.classList.add('erro'); } });
+  verificaCheia(false);
   toast(erros?`${erros} letra(s) errada(s) marcada(s) em vermelho.`: vazias?`Tudo certo até aqui! Faltam ${vazias} letra(s).`:'Tudo certo!');
 };
 $('#btnDica').onclick=()=>{
   const L=NIVEIS[S.jogo.nivel]; if(S.fim||S.dicas>=L.dicas) return;
   const p=palavraAtual(); const alvo=cellsDe(p).find(([r,c])=>S.ent[r+','+c]!==S.jogo.cells[r][c].ch);
   if(!alvo){ toast('Essa palavra já está correta. Escolha outra.'); return; }
-  S.dicas++; const [r,c]=alvo; setCel(r,c,S.jogo.cells[r][c].ch);
+  const antes=penalidadeDicas(S.dicas); S.dicas++; const [r,c]=alvo; S.ajuda.push(r+','+c); setCel(r,c,S.jogo.cells[r][c].ch);
   const el=document.querySelector(`#board .cel[data-k="${r},${c}"]`); el.classList.add('ajuda');
-  atualizaDica(); marcaFeitas(); if(S.modo==='duelo') toast('+15 s de penalidade no duelo.'); checaFim();
+  atualizaDica(); marcaFeitas(); toast(`Dica usada: +${(penalidadeDicas(S.dicas)-antes)/1000} s no tempo.`); $('#tempo').textContent=fmtT(tempoAtual()); checaFim();
 };
 $('#btnDesistir').onclick=async()=>{
   if(S.fim) return;
@@ -972,7 +1135,7 @@ $('#btnDesistir').onclick=async()=>{
 };
 $('#btnSair').onclick=()=>{
   if(!S.fim){ if(!confirm(S.modo==='duelo'?'Sair do duelo? O tempo continua contando e você pode voltar pela aba Duelos.':'Sair desta partida? O progresso será perdido.')) return; }
-  const duelo=S.modo==='duelo'; saiFoco(); if(duelo) mostra('duelos');
+  const duelo=S.modo==='duelo'; if(duelo) store.del(chavePartida()); else limpaProgresso(); saiFoco(); if(duelo) mostra('duelos');
 };
 $('#btnPistas').onclick=()=>$('#painelPistas').classList.toggle('aberto');
 $('#fechaPistas').onclick=()=>$('#painelPistas').classList.remove('aberto');
@@ -980,7 +1143,7 @@ $('#pPrev').onclick=()=>pulaPalavra(-1);
 $('#pNext').onclick=()=>pulaPalavra(1);
 
 async function conclui(desistiu){
-  S.fim=true; const ms=Date.now()-S.inicio; atualizaDica();
+  S.fim=true; const ms=tempoAtual(); atualizaDica(); limpaProgresso();
   const g=S.jogo;
   document.querySelectorAll('#board .cel.v').forEach((el,i)=>{ const [r,c]=el.dataset.k.split(',').map(Number); el.querySelector('input').value=g.cells[r][c].ch; el.classList.add('cheia'); if(!desistiu) setTimeout(()=>el.classList.add('ok'),i*12); });
   if(S.modo==='duelo'){
@@ -1015,7 +1178,7 @@ function resultadoDuelo(d){
   const ven=d.vencedor===S.user.username, emp=d.vencedor==='empate';
   return `<div class="centro"><div style="font-size:44px">${emp?'🤝':ven?'🏆':'💥'}</div><h2>${emp?'Empate!':ven?'Você venceu o duelo!':'Você perdeu o duelo'}</h2>
   <p>Você: <b>${d.meuTempo>=99999999?'desistiu':d.meuTempo!=null?fmtT(d.meuTempo):'não jogou'}</b> · ${esc(d.nomeOponente||'Oponente')}: <b>${d.tempoOponente>=99999999?'desistiu':d.tempoOponente!=null?fmtT(d.tempoOponente):'não jogou'}</b></p>
-  <p class="${emp?'':ven?'mais':'menos'}" style="font-size:20px">${emp?'0 pontos':ven?'+10 pontos':'−5 pontos'}</p></div>`;
+  <p class="${emp?'':ven?'mais':'menos'}" style="font-size:20px">${emp?'0 pontos':ven?`+${d.ganho} pontos`:`−${d.perda} pontos`}</p></div>`;
 }
 async function atualizaDuelosBadge(){
   if(!S.user){ $('#bdDuelo').innerHTML=''; return; }
@@ -1036,14 +1199,15 @@ async function viewDuelos(opPre){
   const nomeOp=d=>esc(d.nomeOponente||(d.souDesafiante?d.desafiado:d.desafiante));
   const linha=(d,acoes,extra='')=>`<div class="duelo"><div class="inf"><b>${d.souDesafiante?'Você desafiou':'Desafio de'} ${nomeOp(d)}</b><div class="small muted">${NIVEIS[d.nivel].nome} · ${d.criadoEm.slice(0,10).split('-').reverse().join('/')}${extra}</div></div>${acoes}</div>`;
   const resTag=d=>{ if(d.status==='recusado') return '<span class="res e">Recusado</span>'; if(d.status==='expirado') return '<span class="res e">Expirado</span>';
-    if(d.vencedor==='empate') return '<span class="res e">Empate</span>'; return d.vencedor===S.user.username?'<span class="res v">Vitória +10</span>':'<span class="res d">Derrota −5</span>'; };
+    if(d.vencedor==='empate') return '<span class="res e">Empate</span>'; return d.vencedor===S.user.username?`<span class="res v">Vitória +${d.ganho}</span>`:`<span class="res d">Derrota −${d.perda}</span>`; };
   v.innerHTML=`<h2>Duelos</h2><div class="dgrid">
     <div class="card"><h3>Novo desafio</h3>
       <label>Oponente</label><select class="f" id="dOp">${ops.map(u=>`<option value="${esc(u.username)}" ${u.username===opPre?'selected':''}>${esc(u.nome)} (@${esc(u.username)}) · ${u.pontos} pts</option>`).join('')}</select>
       <label>Nível</label><select class="f" id="dNv">${Object.values(NIVEIS).map(L=>`<option value="${L.key}">${L.nome}</option>`).join('')}</select>
-      <button class="btn" style="width:100%;margin-top:14px" id="dGo" ${ops.length?'':'disabled'}>⚔️ Desafiar e jogar agora</button>
+      <div class="tag" id="dPrev" style="margin-top:10px;display:block"></div>
+      <button class="btn" style="width:100%;margin-top:12px" id="dGo" ${ops.length?'':'disabled'}>⚔️ Desafiar e jogar agora</button>
       <h3 style="margin-top:20px">Como funciona</h3>
-      <ul class="regras"><li>Os dois recebem exatamente o mesmo tabuleiro.</li><li>Não precisa ser ao mesmo tempo: o desafiado joga quando aceitar.</li><li>Vence quem terminar mais rápido (cada dica soma +15 s; desistir conta como derrota).</li><li>Vencedor <b class="mais">+10</b>, perdedor <b class="menos">−5</b>; o saldo pode ficar negativo.</li><li>O duelo expira em ${3} dias. Se só um terminou, ele vence.</li></ul>
+      <ul class="regras"><li>Os dois recebem exatamente o mesmo tabuleiro.</li><li>Não precisa ser ao mesmo tempo: o desafiado joga quando aceitar.</li><li>Vence quem terminar mais rápido (dicas somam tempo: 15 s, depois 30, 60, 120 e 240 s; desistir conta como derrota).</li><li>Prêmio pela dificuldade: Fácil 8 · Intermediário 15 · Difícil 30 · Avançado 50. O perdedor perde metade, e o saldo pode ficar negativo.</li><li>Cada categoria de diferença entre vocês muda o valor em 25% (de 0,5x a 2x): vencer quem está acima vale mais, e perder para quem está abaixo custa mais.</li><li>O duelo expira em ${3} dias. Se só um terminou, ele vence.</li></ul>
     </div>
     <div>
       <div class="card" style="margin-bottom:14px"><h3>Desafios recebidos</h3>${recebidos.length?recebidos.map(d=>linha(d,`<button class="btn ok sm" data-ac="${d.id}">Aceitar e jogar</button><button class="btn sec sm" data-rc="${d.id}">Recusar</button>`)).join(''):'<div class="muted small">Nenhum desafio pendente.</div>'}</div>
@@ -1052,6 +1216,10 @@ async function viewDuelos(opPre){
       <div class="card"><h3>Histórico</h3>${encerrados.length?encerrados.map(d=>linha(d,resTag(d), d.status==='finalizado'?` · você ${d.meuTempo==null?'não jogou':d.meuTempo>=99999999?'desistiu':fmtT(d.meuTempo)} × ${d.tempoOponente==null?'não jogou':d.tempoOponente>=99999999?'desistiu':fmtT(d.tempoOponente)}`:'')).join(''):'<div class="muted small">Seus duelos encerrados aparecem aqui.</div>'}
         <p class="small muted" style="margin-top:10px">Vitórias: ${S.user.vitorias} · Derrotas: ${S.user.derrotas}</p></div>
     </div></div>`;
+  const prev=()=>{ const op=ops.find(u=>u.username===$('#dOp').value); if(!op){ $('#dPrev').textContent=''; return; }
+    const v=valoresDuelo($('#dNv').value,S.user.pontos,op.pontos), d=valoresDuelo($('#dNv').value,op.pontos,S.user.pontos);
+    $('#dPrev').innerHTML=`Se vencer: <span class="mais">+${v.ganho}</span> · Se perder: <span class="menos">−${d.perda}</span>`; };
+  $('#dOp').onchange=prev; $('#dNv').onchange=prev; prev();
   $('#dGo').onclick=async()=>{ const b=$('#dGo'); b.disabled=true;
     try{ const r=await api('duelCreate',{token:S.token, oponente:$('#dOp').value, nivel:$('#dNv').value}); r.duelo.nomeOponente=(ops.find(u=>u.username===r.duelo.desafiado)||{}).nome; await jogaDuelo(r.duelo); }
     catch(e){ toast(e.message); b.disabled=false; } };
@@ -1063,7 +1231,8 @@ async function jogaDuelo(d){
   const r=await api('duelStart',{token:S.token,id:d.id});
   const nome=d.nomeOponente; S.duelo={...r.duelo, nomeOponente:nome||r.duelo.nomeOponente}; S.modo='duelo';
   const inicioLocal=Date.now()-(r.agora-r.inicio);
-  mostra('jogar'); iniciaJogo(gerarJogo(d.nivel,d.semente), inicioLocal); atualizaDuelosBadge();
+  const prog=store.get('pc_duelo_'+d.id,null);
+  mostra('jogar'); iniciaJogo(gerarJogo(d.nivel,d.semente), inicioLocal); aplicaProgresso(prog); salvaProgresso(); atualizaDuelosBadge();
 }
 
 /* ===================== RANKING ===================== */
@@ -1103,7 +1272,7 @@ async function viewEvolucao(){
     <div class="stat"><div class="v">${u.vitorias}<span class="muted" style="font-size:16px"> / ${u.derrotas}</span></div><div class="l">Duelos vencidos / perdidos</div></div>
   </div>
   <div class="card" style="margin-bottom:14px"><h3>Pontos ao longo do tempo</h3><div class="grafico">${grafico(h)}</div>
-    <p class="small muted" style="margin:6px 0 0">${u.jogouHoje?'✅ Meta diária de hoje cumprida.':'🎯 Conclua um jogo hoje para ganhar +5 e não perder 2 pontos amanhã.'}</p></div>
+    <p class="small muted" style="margin:6px 0 0">${u.jogouHoje?'✅ Meta diária de hoje cumprida.':`🎯 Conclua um jogo hoje para ganhar +${proxBonus()} e não perder ${penalidadeDia(u.pontos)} pontos amanhã.`}</p></div>
   <div class="card"><h3>Atividade recente</h3><div class="hist">${h.slice().reverse().slice(0,40).map(x=>`<div class="it"><span>${rotulo(x)}<br><span class="small muted">${x.dataHora.replace('T',' ').slice(0,16).split(' ').map((s,j)=>j?s:s.split('-').reverse().join('/')).join(' ')}</span></span><span class="${x.pontos>=0?'mais':'menos'}">${fmtPts(x.pontos)}</span></div>`).join('')||'<div class="muted small">Jogue para ver seu histórico.</div>'}</div></div>`;
 }
 function rotulo(x){
@@ -1140,9 +1309,10 @@ function viewRecompensas(){
     <div class="nm nome-t${i}">${t.nome}</div><div class="min">${i===0?'Inicial':'A partir de '+t.min+' pontos'}</div>
     <ul>${t.perks.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>
   <div class="card" style="margin-top:16px"><h3>Como ganhar pontos</h3><ul class="regras">
-    <li>Fácil <b>+1</b> · Intermediário <b>+2</b> · Difícil <b>+3</b> · Avançado <b>+4</b> por jogo concluído.</li>
-    <li>Meta diária: <b class="mais">+5</b> no primeiro jogo do dia. Cada dia sem jogar: <b class="menos">−2</b>.</li>
-    <li>Duelos: vitória <b class="mais">+10</b>, derrota <b class="menos">−5</b>.</li></ul></div>`;
+    <li>Fácil <b>+1</b> · Intermediário <b>+4</b> · Difícil <b>+10</b> · Avançado <b>+20</b> por jogo concluído (cerca de 1 ponto por minuto de esforço).</li>
+    <li>Meta diária: <b class="mais">+10</b> no primeiro jogo do dia, <b class="mais">+2</b> a mais por dia seguido de sequência (até <b class="mais">+30</b>).</li>
+    <li>Cada dia sem jogar: perde <b class="menos">1%</b> dos pontos (mínimo 5, máximo 60). Quem tem mais a proteger precisa manter o ritmo.</li>
+    <li>Duelos: o prêmio depende da dificuldade (Fácil 8 · Intermediário 15 · Difícil 30 · Avançado 50) e o perdedor perde metade. Vencer alguém de categoria mais alta vale até o dobro; vencer alguém de categoria mais baixa vale menos.</li></ul></div>`;
 }
 
 /* ===================== TEMA E INÍCIO ===================== */
@@ -1150,7 +1320,7 @@ function viewRecompensas(){
 $('#btnTema').onclick=()=>{ const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches; const n=dark?'light':'dark'; document.documentElement.dataset.theme=n; store.set('pc_tema',n); };
 if(!API_URL) $('#demoAviso').style.display='block';
 S.carregando=!!S.token; renderUser(); renderNiveis();
-if(S.token){ api('me',{token:S.token}).then(()=>{ renderNiveis(); atualizaDuelosBadge(); }).catch(()=>{}).finally(()=>{ S.carregando=false; renderUser(); }); }
+if(S.token){ api('me',{token:S.token}).then(()=>{ renderNiveis(); atualizaDuelosBadge(); retomaPartida(); }).catch(()=>{}).finally(()=>{ S.carregando=false; renderUser(); }); }
 setInterval(()=>{ if(S.user) atualizaDuelosBadge(); }, 60000);
 
 </script>
