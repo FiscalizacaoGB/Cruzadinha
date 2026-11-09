@@ -235,6 +235,13 @@ body.touch .teclado{display:block}
 }
 @media (max-height:700px){.teclado button{height:42px}.teclado .lin{margin:4px 0}.pista-atual{height:50px;font-size:14px}.gbar{padding:6px 10px}.garea{padding:8px 10px}.gcol{gap:8px}}
 @media (max-width:420px){.ginfo span{display:none}.gbar .tempo{font-size:16px;margin-left:4px}.ib{min-width:36px;padding:0 8px}}
+
+/* ===== login obrigatório ===== */
+.gate{display:none;position:fixed;inset:0;z-index:45;background:var(--bg);overflow:auto;padding:16px}
+body.semlogin .gate{display:flex}
+body.semlogin header,body.semlogin main{display:none}
+.gcard{margin:auto;width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)}
+.gate .logo .sq{margin-right:8px}
 </style>
 </head>
 <body>
@@ -303,6 +310,15 @@ body.touch .teclado{display:block}
     </aside>
   </div>
   <div class="teclado" id="teclado"></div>
+</div>
+
+<!-- TELA DE ACESSO (login obrigatório) -->
+<div class="gate" id="gate">
+  <div class="gcard">
+    <div class="logo" style="justify-content:center;font-size:24px;margin-bottom:6px"><span class="sq"><i></i><i></i><i></i><i></i></span>Cruzadinhas</div>
+    <p class="muted centro" style="margin:0 0 16px">Palavras cruzadas com ranking, duelos e emblemas. Entre ou crie seu usuário para jogar.</p>
+    <div id="gateBox"></div>
+  </div>
 </div>
 
 <div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
@@ -763,17 +779,19 @@ const S = { token:store.get('pc_token',null), user:null, nivel:store.get('pc_niv
 function setUser(u){ S.user=u; renderUser(); }
 function renderUser(){
   const a=$('#userArea');
-  if(!S.user){ a.innerHTML=`<button class="btn sm" id="btnEntrar">Entrar</button>`; $('#btnEntrar').onclick=()=>abreAuth('criar'); return; }
+  document.body.classList.toggle('semlogin', !S.user);
+  if(!S.user){ a.innerHTML=''; if(S.carregando) $('#gateBox').innerHTML='<div class="vazio">Carregando…</div>'; else if(!$('#fAuth')) abreAuth(store.get('pc_ja_entrou',false)?'entrar':'criar'); return; }
+  store.set('pc_ja_entrou',true); $('#gateBox').innerHTML='';
   const i=tierIdx(S.user.pontos);
   a.innerHTML=`<button class="chip" id="btnMe" style="${tvars(i)}" title="${TIERS[i].nome}">${emblema(i,28)}<span class="nm">${esc(S.user.nome)}</span><span class="pts">${S.user.pontos}</span></button>`;
   $('#btnMe').onclick=()=>modal(`<div class="centro">${emblema(i,72)}<h2 style="margin-top:8px">${esc(S.user.nome)}</h2><p class="muted">@${esc(S.user.username)} · ${TIERS[i].nome} · ${S.user.pontos} pontos</p>
     <p>${S.user.jogouHoje?'✅ Meta diária cumprida hoje':'🎯 Jogue hoje para ganhar +5 da meta diária'}</p>
     <button class="btn sec" onclick="fechaModal()">Fechar</button> <button class="btn bad" onclick="sair()">Sair</button></div>`);
 }
-function sair(silencioso){ S.token=null; S.user=null; store.del('pc_token'); renderUser(); fechaModal(); if(!silencioso) toast('Você saiu.'); if(S.modo==='duelo') saiFoco(); else renderNiveis(); if(S.view!=='jogar') mostra(S.view); }
+function sair(silencioso){ if(document.body.classList.contains('foco')) saiFoco(); S.token=null; S.user=null; store.del('pc_token'); renderUser(); fechaModal(); if(!silencioso) toast('Você saiu.'); if(S.modo==='duelo') saiFoco(); else renderNiveis(); if(S.view!=='jogar') mostra(S.view); }
 
 function abreAuth(aba='entrar'){
-  modal(`<div class="seg"><button data-a="entrar" class="${aba==='entrar'?'on':''}">Entrar</button><button data-a="criar" class="${aba==='criar'?'on':''}">Criar usuário</button></div>
+  const html=(`<div class="seg"><button data-a="entrar" class="${aba==='entrar'?'on':''}">Entrar</button><button data-a="criar" class="${aba==='criar'?'on':''}">Criar usuário</button></div>
   <form id="fAuth">
     <div id="campoNome" style="${aba==='criar'?'':'display:none'}"><label>Nome de exibição</label><input class="f" name="nome" maxlength="24" placeholder="Como você aparece no ranking"></div>
     <label>Usuário</label><input class="f" name="username" autocomplete="username" autocapitalize="none" placeholder="ex.: lucas_ribeiro">
@@ -781,6 +799,7 @@ function abreAuth(aba='entrar'){
     <div class="erro-msg" id="authErr"></div>
     <button class="btn" style="width:100%;margin-top:6px" id="authBtn">${aba==='criar'?'Criar usuário':'Entrar'}</button>
   </form>`);
+  if(!S.user){ fechaModal(); $('#gateBox').innerHTML=html; } else modal(html);
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>abreAuth(b.dataset.a));
   $('#fAuth').onsubmit=async e=>{
     e.preventDefault(); const f=new FormData(e.target), btn=$('#authBtn'); btn.disabled=true; $('#authErr').textContent='';
@@ -1128,8 +1147,8 @@ function viewRecompensas(){
 (function(){ const t=store.get('pc_tema',null); if(t) document.documentElement.dataset.theme=t; })();
 $('#btnTema').onclick=()=>{ const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches; const n=dark?'light':'dark'; document.documentElement.dataset.theme=n; store.set('pc_tema',n); };
 if(!API_URL) $('#demoAviso').style.display='block';
-renderUser(); renderNiveis();
-if(S.token){ api('me',{token:S.token}).then(()=>{ renderNiveis(); atualizaDuelosBadge(); }).catch(()=>{}); }
+S.carregando=!!S.token; renderUser(); renderNiveis();
+if(S.token){ api('me',{token:S.token}).then(()=>{ renderNiveis(); atualizaDuelosBadge(); }).catch(()=>{}).finally(()=>{ S.carregando=false; renderUser(); }); }
 setInterval(()=>{ if(S.user) atualizaDuelosBadge(); }, 60000);
 
 </script>
