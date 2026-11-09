@@ -1,1 +1,1137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palavras Cruzadas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f1ea; --bg2:#ebe6db; --card:#ffffff; --ink:#1f2430; --ink2:#5b6273; --line:#d9d3c6;
+  --pri:#3b5bdb; --pri2:#2f4ac0; --pri-soft:#e3e9ff; --ok:#2b9348; --ok-soft:#dcf5e3; --bad:#d6336c; --bad-soft:#ffe3ec;
+  --hl:#fff3bf; --act:#ffd43b; --cell:#ffffff; --blk:#2b3040; --shadow:0 2px 10px rgba(30,30,50,.08);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14161d; --bg2:#1b1e27; --card:#20242f; --ink:#eceef4; --ink2:#a3a9b8; --line:#333a49;
+  --pri:#7b93ff; --pri2:#94a7ff; --pri-soft:#262f52; --ok:#51cf66; --ok-soft:#1d3b27; --bad:#ff6b9a; --bad-soft:#47202e;
+  --hl:#4a4320; --act:#8a7416; --cell:#2a2f3c; --blk:#0d0f14; --shadow:0 2px 12px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --bg:#14161d; --bg2:#1b1e27; --card:#20242f; --ink:#eceef4; --ink2:#a3a9b8; --line:#333a49;
+  --pri:#7b93ff; --pri2:#94a7ff; --pri-soft:#262f52; --ok:#51cf66; --ok-soft:#1d3b27; --bad:#ff6b9a; --bad-soft:#47202e;
+  --hl:#4a4320; --act:#8a7416; --cell:#2a2f3c; --blk:#0d0f14; --shadow:0 2px 12px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.top{display:flex;align-items:center;gap:12px;height:60px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:19px;letter-spacing:-.3px;white-space:nowrap}
+.logo .sq{display:grid;grid-template-columns:repeat(2,11px);gap:2px}
+.logo .sq i{width:11px;height:11px;background:var(--pri);border-radius:2px}.logo .sq i:nth-child(2){background:var(--act)}.logo .sq i:nth-child(3){background:var(--ink)}
+.sp{flex:1}
+.chip{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-weight:700;font-size:14px;max-width:60vw}
+.chip .pts{color:var(--pri);font-weight:900}
+.chip .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{background:none;border:0;padding:10px 12px;font-weight:800;color:var(--ink2);border-bottom:3px solid transparent;white-space:nowrap;position:relative}
+nav.tabs button.on{color:var(--pri);border-bottom-color:var(--pri)}
+.badge{display:inline-grid;place-items:center;min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font-size:11px;padding:0 5px;margin-left:4px}
+.btn{border:0;border-radius:10px;padding:9px 16px;font-weight:800;background:var(--pri);color:#fff;transition:.15s}
+.btn:hover{background:var(--pri2)}
+.btn.sec{background:var(--bg2);color:var(--ink);border:1px solid var(--line)}
+.btn.sec:hover{background:var(--line)}
+.btn.ok{background:var(--ok)}.btn.bad{background:var(--bad)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+main{padding:20px 0 60px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+h2{margin:0 0 12px;font-size:22px;font-weight:900;letter-spacing:-.3px}
+h3{margin:0 0 10px;font-size:16px;font-weight:900}
+.muted{color:var(--ink2)}
+.small{font-size:13px}
+.demo{background:var(--pri-soft);color:var(--ink);border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:16px}
+/* níveis */
+.niveis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.nivel{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 14px}
+.nivel b{display:block;font-size:16px;font-weight:900}
+.nivel .p{float:right;background:var(--bg2);border-radius:999px;padding:1px 8px;font-size:12px;font-weight:800}
+.nivel small{color:var(--ink2);display:block;margin-top:4px;line-height:1.3}
+.nivel.on{border-color:var(--pri);background:var(--pri-soft)}
+.nivel .dots{margin-top:6px;letter-spacing:2px;color:var(--pri)}
+@media (max-width:760px){.niveis{grid-template-columns:repeat(2,1fr)}}
+/* jogo */
+.barra{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px}
+.tag{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-weight:800;font-size:13px}
+.tempo{font-variant-numeric:tabular-nums}
+.duelban{background:linear-gradient(90deg,#ff922b,#f03e3e);color:#fff;border-radius:12px;padding:10px 14px;font-weight:800;margin-bottom:12px;display:none}
+.duelban.on{display:block}
+.jogo{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.jogo{grid-template-columns:1fr}}
+.pista-atual{background:var(--pri-soft);border-radius:10px;padding:10px 12px;font-weight:700;margin-bottom:10px;min-height:44px;display:flex;gap:8px;align-items:center}
+.pista-atual b{color:var(--pri);white-space:nowrap}
+.tab-wrap{display:flex;justify-content:center}
+.board{--sz:min(40px, calc((100vw - 34px) / var(--cols)));display:grid;grid-template-columns:repeat(var(--cols),var(--sz));gap:0;background:transparent;user-select:none}
+.cel{width:var(--sz);height:var(--sz);position:relative}
+.cel.v{background:var(--cell);outline:1.5px solid var(--blk);outline-offset:-0.75px;z-index:1}
+.cel .n{position:absolute;top:1px;left:2px;font-size:calc(var(--sz)*.27);font-weight:800;color:var(--ink2);pointer-events:none;line-height:1}
+.cel input{width:100%;height:100%;border:0;background:transparent;text-align:center;font-weight:900;font-size:calc(var(--sz)*.55);text-transform:uppercase;padding:0;padding-top:calc(var(--sz)*.08);outline:none;caret-color:transparent;border-radius:0}
+.cel.hl{background:var(--hl)}
+.cel.at{background:var(--act)}
+.cel.fixa input{color:var(--pri)}
+.cel.erro{background:var(--bad-soft)}.cel.erro input{color:var(--bad)}
+.cel.ok{background:var(--ok-soft);animation:pop .4s ease both}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+.pistas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.pistas{grid-template-columns:1fr}}
+.pistas ol{list-style:none;margin:0;padding:0}
+.pistas li{padding:6px 8px;border-radius:8px;cursor:pointer;font-size:14.5px;line-height:1.35;display:flex;gap:8px}
+.pistas li b{min-width:22px;color:var(--ink2)}
+.pistas li:hover{background:var(--bg2)}
+.pistas li.on{background:var(--pri-soft)}
+.pistas li.feito{color:var(--ink2);text-decoration:line-through}
+.pistas li span em{font-style:normal;color:var(--ink2);font-size:12px}
+/* ranking */
+.podio{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:10px;align-items:end;margin-bottom:16px}
+.pod{text-align:center;border-radius:16px;padding:14px 8px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden}
+.pod .pos{font-size:28px;font-weight:900}
+.pod .nm{font-weight:900;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod .pt{color:var(--pri);font-weight:900}
+.pod.p1{padding-top:22px}
+.lista .row{display:grid;grid-template-columns:34px 46px 1fr auto;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);margin-bottom:8px;position:relative;overflow:hidden}
+.lista .row .pos{font-weight:900;color:var(--ink2);text-align:center}
+.lista .row .nm{font-weight:900;display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.lista .row .nm span.n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lista .row .sub{font-size:12.5px;color:var(--ink2);font-weight:600}
+.lista .row .pt{font-weight:900;font-size:18px;text-align:right}
+.lista .row .pt small{display:block;font-size:11px;color:var(--ink2);font-weight:700}
+.lista .row.eu{outline:2px solid var(--pri)}
+.tierlbl{font-size:11px;font-weight:900;padding:1px 7px;border-radius:999px;color:#fff;background:linear-gradient(90deg,var(--c2),var(--c1));text-shadow:0 1px 1px rgba(0,0,0,.35)}
+/* outfits por categoria */
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#fff;font-size:17px;position:relative;background:linear-gradient(135deg,var(--c1),var(--c2));text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.av.big{width:64px;height:64px;font-size:26px}
+.t1 .av,.t2 .av{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--c2)}
+.t3 .av,.t4 .av,.t5 .av{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--c1),0 0 10px 3px var(--c1)}
+.t6 .av,.t7 .av,.t8 .av,.t9 .av{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--c1),0 0 16px 5px var(--c1);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--c2),0 0 22px 8px var(--c1)}}
+.row.t1,.row.t2{border-left:5px solid var(--c2)}
+.row.t3,.row.t4,.row.t5{border-left:5px solid var(--c1);background:linear-gradient(90deg,color-mix(in srgb,var(--c1) 18%,var(--card)),var(--card) 55%)}
+.row.t6,.row.t7,.row.t8{border-left:5px solid var(--c1);background:linear-gradient(90deg,color-mix(in srgb,var(--c1) 26%,var(--card)),var(--card) 65%)}
+.row.t9{border:2px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(90deg,#fde68a,#f97316,#dc2626,#f97316,#fde68a) border-box;background-size:auto,300% 100%;animation:fogo 4s linear infinite}
+@keyframes fogo{to{background-position:0 0,300% 0}}
+.row.t4::after,.row.t5::after,.row.t6::after,.row.t7::after,.row.t8::after,.row.t9::after,.pod.t4::after,.pod.t5::after,.pod.t6::after,.pod.t7::after,.pod.t8::after,.pod.t9::after{
+  content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);background-size:250% 100%;animation:brilho 3.5s ease-in-out infinite;pointer-events:none}
+@keyframes brilho{0%{background-position:150% 0}60%,100%{background-position:-100% 0}}
+.nome-t2,.nome-t3,.nome-t4,.nome-t5,.nome-t6,.nome-t7,.nome-t8,.nome-t9{background:linear-gradient(90deg,var(--c2),var(--c1));-webkit-background-clip:text;background-clip:text;color:transparent}
+:root[data-theme="dark"] .nome-t2,:root[data-theme="dark"] .nome-t3{background:linear-gradient(90deg,var(--c1),var(--c1))}
+.coroa{font-size:14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+/* evolução */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.stat .v{font-size:26px;font-weight:900}
+.stat .l{font-size:12.5px;color:var(--ink2);font-weight:700}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+.prog{height:12px;border-radius:6px;background:var(--bg2);overflow:hidden;margin:8px 0 4px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--c2),var(--c1));border-radius:6px}
+.hist .it{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hist .it:last-child{border:0}
+.mais{color:var(--ok);font-weight:900}.menos{color:var(--bad);font-weight:900}
+.grafico svg{width:100%;height:auto;display:block}
+/* recompensas */
+.tiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.tier{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--card);text-align:center;position:relative;overflow:hidden}
+.tier.bloq{background:var(--bg2)}.tier.bloq .nm,.tier.bloq ul,.tier.bloq .min{opacity:.7}
+.tier.atual{outline:3px solid var(--c1)}
+.tier .nm{font-weight:900;font-size:17px;margin-top:6px}
+.tier .min{font-size:13px;color:var(--ink2);font-weight:700}
+.tier ul{text-align:left;font-size:13px;padding-left:18px;margin:10px 0 0;color:var(--ink2)}
+.tier .st{position:absolute;top:10px;right:10px;font-size:11px;font-weight:900;padding:2px 8px;border-radius:999px;background:var(--bg2)}
+/* duelos */
+.dgrid{display:grid;grid-template-columns:340px 1fr;gap:16px;align-items:start}
+@media (max-width:860px){.dgrid{grid-template-columns:1fr}}
+label{display:block;font-weight:800;font-size:13px;margin:10px 0 4px}
+input.f,select.f{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);outline:none}
+input.f:focus,select.f:focus{border-color:var(--pri)}
+.duelo{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--card);flex-wrap:wrap}
+.duelo .inf{flex:1;min-width:180px}
+.duelo .inf b{font-weight:900}
+.res{font-weight:900;padding:2px 8px;border-radius:999px;font-size:12px}
+.res.v{background:var(--ok-soft);color:var(--ok)}.res.d{background:var(--bad-soft);color:var(--bad)}.res.e{background:var(--bg2);color:var(--ink2)}
+.regras{font-size:14px;line-height:1.5;color:var(--ink2);margin:0;padding-left:18px}
+/* modal / toast */
+.modal{position:fixed;inset:0;background:rgba(10,12,20,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.on{display:flex}
+.modal .box{background:var(--card);border-radius:18px;max-width:420px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow:auto}
+.seg{display:flex;background:var(--bg2);border-radius:10px;padding:3px;margin-bottom:6px}
+.seg button{flex:1;border:0;background:none;padding:8px;border-radius:8px;font-weight:800;color:var(--ink2)}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.erro-msg{color:var(--bad);font-weight:700;font-size:14px;min-height:20px;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);opacity:0;visibility:hidden;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:700;z-index:60;transition:.25s;max-width:calc(100% - 32px)}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+.centro{text-align:center}
+.vazio{padding:24px;text-align:center;color:var(--ink2)}
+.emb{display:inline-block;line-height:0}
+.lnk{background:none;border:0;color:var(--pri);font-weight:800;padding:0}
+.themebtn{background:none;border:1px solid var(--line);border-radius:8px;width:34px;height:34px;font-size:18px;line-height:1}
+.nome-t2{background:none!important;color:var(--c2)!important}
+@media (max-width:520px){.logo{font-size:0;gap:0}.logo .sq{margin-right:0}}
 
+/* ===== modo foco ===== */
+body.foco{overflow:hidden}
+.lobby .niveis{grid-template-columns:repeat(2,1fr);gap:14px}
+.lobby .nivel{padding:22px;border-radius:18px;transition:.15s;position:relative;overflow:hidden}
+.lobby .nivel:hover{border-color:var(--pri);transform:translateY(-2px);box-shadow:var(--shadow)}
+.lobby .nivel b{font-size:21px}
+.lobby .nivel .go{display:inline-block;margin-top:12px;font-weight:900;color:var(--pri)}
+@media (max-width:560px){.lobby .niveis{grid-template-columns:1fr}.lobby .nivel{padding:16px}}
+.partida{position:fixed;inset:0;height:100vh;height:100dvh;display:none;flex-direction:column;background:var(--bg);z-index:40}
+.partida.on{display:flex}
+.gbar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--line);flex:none}
+.ginfo{display:flex;flex-direction:column;line-height:1.15;min-width:0;flex:0 1 auto;overflow:hidden}
+.ginfo b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gbar .tempo{flex:none}
+*{-webkit-tap-highlight-color:transparent}
+.ginfo b{font-weight:900}.ginfo span{font-size:12px;color:var(--ink2);font-weight:700}
+.gbar .tempo{font-weight:900;font-size:18px;font-variant-numeric:tabular-nums;margin-left:10px;padding:4px 10px;border-radius:8px;background:var(--bg2)}
+.ib{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:10px;height:38px;min-width:38px;padding:0 10px;font-weight:800;justify-content:center}
+.ib:hover{background:var(--bg2)}.ib:disabled{opacity:.4;cursor:not-allowed}
+.ib small{font-size:11px;background:var(--pri);color:#fff;border-radius:8px;padding:0 5px}
+#btnPistas{display:none}
+.partida .duelban{margin:8px 12px 0;padding:8px 12px;font-size:14px;flex:none}
+.garea{flex:1;min-height:0;display:flex;gap:20px;padding:16px;width:100%;max-width:1240px;margin:0 auto}
+.gcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.pista-atual{display:flex;align-items:center;gap:6px;background:var(--pri-soft);border-radius:12px;padding:6px;margin:0;min-height:52px;flex:none;font-size:16px}
+.pista-atual{height:58px}
+.pista-atual #pistaAtual{flex:1;min-width:0;padding:0 4px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pista-atual #pistaAtual b{margin-right:6px}
+.pista-atual .nav{border:0;background:var(--card);border-radius:8px;width:36px;height:38px;font-size:22px;font-weight:900;color:var(--pri);flex:none}
+#boardWrap{flex:1;min-height:0;display:flex;overflow:auto}
+#boardWrap .board{margin:auto}
+.partida .board{--sz:32px}
+aside.pistas{width:330px;flex:none;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 12px;display:block}
+aside.pistas h4{margin:12px 6px 4px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2)}
+.phead{display:flex;align-items:center;justify-content:space-between;padding:0 6px}.phead h3{margin:0}
+.phead .ib{display:none}
+.teclado{display:none;flex:none;background:var(--bg2);padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.teclado .lin{display:flex;justify-content:center;gap:5px;margin:5px 0}
+.teclado button{flex:1;max-width:44px;height:48px;border:0;border-radius:8px;background:var(--card);font-weight:900;font-size:19px;box-shadow:0 1px 0 var(--line);touch-action:manipulation}
+.teclado button:active{background:var(--pri);color:#fff}
+.teclado button.lg{max-width:70px;flex:1.6;font-size:17px}
+body.touch .teclado{display:block}
+@media (max-width:860px){
+  .gbar .lbl{display:none}
+  #btnPistas{display:inline-flex}
+  .garea{padding:10px;gap:0}
+  aside.pistas{position:fixed;left:0;right:0;bottom:0;width:auto;max-height:70vh;border-radius:18px 18px 0 0;z-index:45;transform:translateY(105%);transition:transform .25s;box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+  aside.pistas.aberto{transform:translateY(0)}
+  .phead .ib{display:inline-flex}
+  .pista-atual{font-size:15px}
+}
+@media (max-height:700px){.teclado button{height:42px}.teclado .lin{margin:4px 0}.pista-atual{height:50px;font-size:14px}.gbar{padding:6px 10px}.garea{padding:8px 10px}.gcol{gap:8px}}
+@media (max-width:420px){.ginfo span{display:none}.gbar .tempo{font-size:16px;margin-left:4px}.ib{min-width:36px;padding:0 8px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div class="logo"><span class="sq"><i></i><i></i><i></i><i></i></span>Cruzadinhas</div>
+    <div class="sp"></div>
+    <button class="themebtn" id="btnTema" title="Alternar tema" aria-label="Alternar tema">☾</button>
+    <div id="userArea"></div>
+  </div>
+  <div class="wrap">
+    <nav class="tabs" id="tabs">
+      <button data-v="jogar" class="on">Jogar</button>
+      <button data-v="duelos">Duelos<span id="bdDuelo"></span></button>
+      <button data-v="ranking">Ranking</button>
+      <button data-v="evolucao">Evolução</button>
+      <button data-v="recompensas">Recompensas</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="demoAviso" class="demo" style="display:none">Modo demonstração: os dados ficam só neste navegador e os outros jogadores são fictícios. Para usar a planilha do Google, cole a URL do Apps Script em <code>API_URL</code>.</div>
+
+  <!-- JOGAR -->
+  <section class="view on" id="v-jogar">
+    <div class="lobby">
+      <h2>Escolha o nível</h2>
+      <p class="muted" id="lobbyInfo" style="margin:-4px 0 16px">Cada partida é sorteada entre milhares de jogos diferentes.</p>
+      <div class="niveis" id="niveis"></div>
+    </div>
+  </section>
+
+  <!-- DUELOS -->
+  <section class="view" id="v-duelos"></section>
+  <!-- RANKING -->
+  <section class="view" id="v-ranking"></section>
+  <!-- EVOLUÇÃO -->
+  <section class="view" id="v-evolucao"></section>
+  <!-- RECOMPENSAS -->
+  <section class="view" id="v-recompensas"></section>
+</main>
+
+<!-- PARTIDA EM TELA CHEIA (modo foco) -->
+<div class="partida" id="partida">
+  <div class="gbar">
+    <button class="ib" id="btnSair" aria-label="Sair da partida" title="Sair">✕</button>
+    <div class="ginfo"><b id="jogoNivel"></b><span id="jogoId"></span></div>
+    <span class="tempo" id="tempo">00:00</span>
+    <div class="sp"></div>
+    <button class="ib" id="btnDica" title="Dica: revela uma letra"><span aria-hidden="true">💡</span><span class="lbl">Dica</span><small id="dicaN"></small></button>
+    <button class="ib" id="btnVerificar" title="Verificar letras"><span aria-hidden="true">✓</span><span class="lbl">Verificar</span></button>
+    <button class="ib" id="btnPistas" title="Ver todas as pistas"><span aria-hidden="true">☰</span><span class="lbl">Pistas</span></button>
+    <button class="ib" id="btnDesistir" title="Desistir"><span aria-hidden="true">⚑</span><span class="lbl">Desistir</span></button>
+  </div>
+  <div class="duelban" id="duelBan"></div>
+  <div class="garea">
+    <div class="gcol">
+      <div class="pista-atual"><button class="nav" id="pPrev" aria-label="Pista anterior">‹</button><div id="pistaAtual"></div><button class="nav" id="pNext" aria-label="Próxima pista">›</button></div>
+      <div id="boardWrap"><div class="board" id="board"></div></div>
+    </div>
+    <aside class="pistas" id="painelPistas">
+      <div class="phead"><h3>Pistas</h3><button class="ib" id="fechaPistas" aria-label="Fechar">✕</button></div>
+      <h4>Horizontais</h4><ol id="pH"></ol>
+      <h4>Verticais</h4><ol id="pV"></ol>
+    </aside>
+  </div>
+  <div class="teclado" id="teclado"></div>
+</div>
+
+<div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   CONFIGURAÇÃO: cole aqui a URL do App da Web do Google Apps Script
+   (termina em /exec). Deixe vazio para testar no modo demonstração.
+   ========================================================================= */
+const API_URL = 'https://script.google.com/macros/s/AKfycbyJpRrCQwFAeUaFXNBa1Ici1ojkMwwmVQzSx34AkqQjzJpMJXgheVGK7cwBukj_a-96/exec';
+</script>
+<script>
+/* ===================== BANCO DE PALAVRAS =====================
+   Formato: "PALAVRA|dica". Acentos e Ç são removidos no tabuleiro.
+   Para ampliar, basta acrescentar linhas no nível desejado.        */
+const BANCO = {
+facil: [
+"SOL|Estrela que ilumina o dia","LUA|Satélite natural da Terra","MAR|Grande extensão de água salgada",
+"CASA|Lugar onde moramos","GATO|Animal que mia","CÃO|Melhor amigo do homem","BOLA|Objeto redondo do futebol",
+"PÃO|Alimento assado feito de farinha","LEITE|Bebida branca tirada da vaca","OVO|A galinha bota",
+"RATO|Roedor que adora queijo","PATO|Ave que faz quá-quá","VACA|Animal que dá leite","FLOR|Parte colorida da planta",
+"ÁRVORE|Planta grande com tronco","FOGO|Produz calor e chamas","ÁGUA|Líquido essencial à vida",
+"NUVEM|Fica no céu e traz chuva","CHUVA|Água que cai do céu","NEVE|Flocos gelados que caem do céu",
+"MESA|Móvel onde fazemos as refeições","CAMA|Móvel onde dormimos","PORTA|Abre e fecha para a gente entrar",
+"JANELA|Abertura na parede para ver lá fora","LIVRO|Tem páginas e conta histórias","LÁPIS|Usado para escrever e pode ser apagado",
+"ESCOLA|Lugar onde se aprende","AMIGO|Pessoa querida e de confiança","MÃE|Quem nos deu à luz","PAI|Marido da mãe",
+"BEBÊ|Criança recém-nascida","DEDO|A mão tem cinco","OLHO|Órgão da visão","NARIZ|Órgão do olfato",
+"BOCA|Por onde comemos","MÃO|Parte do corpo com cinco dedos","BRAÇO|Fica entre o ombro e a mão",
+"PEIXE|Vive na água e tem escamas","SAPO|Anfíbio que coaxa","LEÃO|Rei da selva","URSO|Animal grande e peludo que hiberna",
+"MACACO|Animal que adora banana","COBRA|Réptil sem pernas","ABELHA|Inseto que produz mel","MEL|Doce feito pelas abelhas",
+"UVA|Fruta que vira vinho","MAÇÃ|Fruta vermelha da Branca de Neve","PERA|Fruta em formato de gota",
+"BANANA|Fruta amarela e comprida","LIMÃO|Fruta verde e azeda","MILHO|Grão amarelo da pipoca",
+"ARROZ|Grão que acompanha o feijão","FEIJÃO|Grão do prato típico brasileiro","SAL|Tempero branco",
+"AZUL|Cor do céu","VERDE|Cor da grama","ROSA|Flor com espinhos","BOLO|Doce de aniversário",
+"SUCO|Bebida feita de frutas","CARRO|Veículo de quatro rodas","TREM|Anda sobre trilhos","BARCO|Navega na água",
+"AVIÃO|Voa levando passageiros","RUA|Via pública da cidade","PRAIA|Lugar com areia e mar","SAPATO|Calçado para os pés",
+"CHAPÉU|Usa-se na cabeça","MALA|Leva as roupas na viagem","FACA|Talher que corta","GARFO|Talher com dentes",
+"COPO|Usado para beber","PRATO|Onde se serve a comida","DIA|Período com a luz do sol","NOITE|Período escuro do dia",
+"ANO|Tem doze meses","MÊS|Tem cerca de trinta dias","FRIO|Contrário de quente","RIO|Curso de água doce",
+"ILHA|Terra cercada de água","CÉU|Onde ficam as nuvens","VENTO|Ar em movimento","PIPA|Brinquedo que voa com o vento",
+"BONECA|Brinquedo em forma de pessoa","DENTE|Usamos para mastigar","SONO|Vontade de dormir","RISO|O mesmo que risada",
+"FADA|Ser mágico com varinha","REI|Marido da rainha","OURO|Metal precioso amarelo","TATU|Animal com casca que cava buracos",
+"GALO|Canta de manhã cedinho","PORCO|Animal que gosta de lama","CAVALO|Animal que relincha","OVELHA|Animal que dá lã",
+"LOBO|Uiva para a lua","SOPA|Comida líquida e quente","QUEIJO|Feito de leite, o rato adora","CAFÉ|Bebida preta da manhã",
+"PIANO|Instrumento de teclas","TAMBOR|Instrumento de percussão","FESTA|Comemoração com amigos","CHAVE|Abre a fechadura",
+"PENTE|Usado para arrumar o cabelo","SABÃO|Usado para lavar","TOALHA|Usada para se secar","VELA|Ilumina com uma chama",
+"NINHO|Casa do passarinho","ASA|A ave usa para voar","PENA|Cobre o corpo das aves","SINO|Faz blém-blém na igreja",
+"PIPOCA|Milho estourado","NAVIO|Barco muito grande","TIGRE|Felino listrado","FOCA|Animal marinho que bate palmas no circo"
+],
+intermediario: [
+"BRASIL|País do futebol e do samba","CAPITAL|Cidade sede do governo","OCEANO|O Atlântico é um","PLANETA|Terra, Marte e Júpiter são exemplos",
+"DESERTO|Região seca com muita areia","FLORESTA|Grande área coberta de árvores","VULCÃO|Montanha que expele lava",
+"ESTRELA|Astro que brilha com luz própria","COMETA|Astro com cauda luminosa","GIRAFA|Animal de pescoço muito comprido",
+"ELEFANTE|Maior animal terrestre, tem tromba","TUBARÃO|Peixe predador de dentes afiados","GOLFINHO|Mamífero marinho muito inteligente",
+"PINGUIM|Ave que não voa e vive no frio","CORUJA|Ave noturna, símbolo da sabedoria","TARTARUGA|Réptil com casco",
+"BORBOLETA|Inseto que já foi lagarta","JACARÉ|Réptil dos rios brasileiros","TUCANO|Ave de bico grande e colorido",
+"MÉDICO|Profissional que cuida da saúde","PROFESSOR|Quem ensina na escola","BOMBEIRO|Profissional que apaga incêndios",
+"CARTEIRO|Entrega as cartas","PADEIRO|Faz pães","DENTISTA|Cuida dos dentes","PINTOR|Artista do pincel e da tinta",
+"MÚSICA|Arte dos sons","POESIA|Arte de escrever versos","TEATRO|Lugar de peças e atores","CINEMA|Lugar para assistir a filmes",
+"JORNAL|Publicação diária de notícias","TECLADO|Parte do computador com as letras","CELULAR|Telefone que levamos no bolso",
+"INTERNET|Rede mundial de computadores","JANEIRO|Primeiro mês do ano","DEZEMBRO|Mês do Natal","OUTONO|Estação em que as folhas caem",
+"INVERNO|Estação mais fria do ano","VERÃO|Estação mais quente do ano","PRIMAVERA|Estação das flores","TRIÂNGULO|Figura de três lados",
+"QUADRADO|Figura de quatro lados iguais","CÍRCULO|Figura redonda","DIAMANTE|Pedra preciosa mais dura","ESMERALDA|Pedra preciosa verde",
+"CHOCOLATE|Doce feito de cacau","FEIJOADA|Prato com feijão preto e carnes","CHURRASCO|Carne assada na brasa",
+"ABACAXI|Fruta com coroa e casca espinhosa","MORANGO|Fruta vermelha com sementes por fora","LARANJA|Fruta cítrica do suco",
+"MELANCIA|Fruta verde por fora e vermelha por dentro","CENOURA|Legume laranja que o coelho adora","TOMATE|Fruto vermelho do molho",
+"ALFACE|Folha verde da salada","FUTEBOL|Esporte jogado com os pés","BASQUETE|Esporte da cesta","NATAÇÃO|Esporte praticado na piscina",
+"XADREZ|Jogo de tabuleiro com rei e rainha","GUITARRA|Instrumento de cordas elétrico","VIOLINO|Instrumento de cordas tocado com arco",
+"SANFONA|Instrumento típico do forró","BICICLETA|Veículo de duas rodas a pedal","FOGUETE|Leva astronautas ao espaço",
+"MONTANHA|Grande elevação de terra","CACHOEIRA|Queda d’água","AMAZÔNIA|Maior floresta tropical do mundo",
+"PANTANAL|Planície alagada de MT e MS","NORDESTE|Região brasileira do sertão e do forró","SAMBA|Ritmo do Carnaval carioca",
+"CARNAVAL|Festa popular de fevereiro","DICIONÁRIO|Livro com o significado das palavras","ALFABETO|Conjunto das letras",
+"BÚSSOLA|Aponta para o norte","ESPELHO|Reflete a nossa imagem","TESOURA|Usada para cortar papel","MARTELO|Ferramenta para pregar pregos",
+"ESCADA|Usada para subir degraus","TELHADO|Cobre a casa","JARDIM|Lugar com flores e plantas","CASTELO|Morada medieval dos reis",
+"PIRATA|Ladrão dos mares","DRAGÃO|Monstro lendário que cospe fogo","SEREIA|Metade mulher, metade peixe","VAMPIRO|Ser lendário que bebe sangue",
+"CORAÇÃO|Órgão que bombeia o sangue","PULMÃO|Órgão da respiração","CÉREBRO|Órgão do pensamento","ESQUELETO|Conjunto dos ossos do corpo",
+"SAUDADE|Palavra portuguesa para a falta que alguém faz","AMIZADE|Relação entre amigos","COELHO|Animal de orelhas compridas da Páscoa",
+"CANGURU|Animal australiano que pula e tem bolsa","ZEBRA|Cavalo listrado da África","CAMELO|Animal do deserto com corcovas",
+"RELÓGIO|Marca as horas","JANGADA|Embarcação dos pescadores do Nordeste","TAPIOCA|Feita com a goma da mandioca",
+"MANDIOCA|Raiz também chamada de aipim","GUARANÁ|Fruto amazônico que virou refrigerante","LANTERNA|Ilumina no escuro e usa pilhas",
+"PARAQUEDAS|Permite saltar do avião com segurança","MOCHILA|Bolsa que se leva nas costas"
+],
+dificil: [
+"ARQUIPÉLAGO|Conjunto de ilhas próximas","PENÍNSULA|Terra cercada de água, exceto por um lado","ISTMO|Faixa estreita de terra que liga duas massas",
+"ESTUÁRIO|Foz em forma de funil onde a água doce encontra o mar","FOTOSSÍNTESE|Processo em que as plantas produzem alimento com luz",
+"MITOCÔNDRIA|Organela da respiração celular","CLOROFILA|Pigmento verde das plantas","OXIGÊNIO|Elemento de símbolo O",
+"HIDROGÊNIO|Elemento mais leve da tabela periódica","GRAVIDADE|Força que nos mantém no chão","ECLIPSE|Ocultação de um astro por outro",
+"CONSTELAÇÃO|O Cruzeiro do Sul é uma","GALÁXIA|A Via Láctea é uma","TELESCÓPIO|Instrumento para observar astros",
+"MICROSCÓPIO|Instrumento para ver o muito pequeno","TERREMOTO|Tremor de terra","FURACÃO|Tempestade tropical de ventos giratórios",
+"GEOGRAFIA|Ciência que estuda a superfície da Terra","FILOSOFIA|Em grego, amor à sabedoria","DEMOCRACIA|Governo do povo",
+"REPÚBLICA|Forma de governo proclamada no Brasil em 1889","INDEPENDÊNCIA|Proclamada às margens do Ipiranga","ABOLIÇÃO|Fim da escravidão, pela Lei Áurea",
+"PARLAMENTO|Assembleia legislativa","METÁFORA|Comparação implícita entre termos","SINÔNIMO|Palavra de mesmo significado",
+"ANTÔNIMO|Palavra de sentido oposto","PARÁGRAFO|Divisão do texto que começa com recuo","ADJETIVO|Classe de palavra que qualifica o substantivo",
+"ADVÉRBIO|Palavra que modifica o verbo","HIPOTENUSA|Lado oposto ao ângulo reto","POLÍGONO|Figura plana fechada formada por segmentos",
+"DIÂMETRO|O dobro do raio","EQUAÇÃO|Igualdade com incógnita","FRAÇÃO|Representa partes de um inteiro","PORCENTAGEM|Razão com base cem",
+"ALGORITMO|Sequência de passos para resolver um problema","ORQUESTRA|Grupo de músicos regido por maestro","SINFONIA|Composição para orquestra",
+"ESCULTURA|Arte de modelar estátuas","ARQUITETO|Projeta edifícios","ASTRONAUTA|Viaja ao espaço","ARQUEÓLOGO|Estuda civilizações por seus vestígios",
+"VETERINÁRIO|Médico dos animais","ADVOGADO|Defende causas na justiça","JORNALISTA|Profissional da notícia","CAMALEÃO|Réptil que muda de cor",
+"ORNITORRINCO|Mamífero que bota ovos e tem bico de pato","HIPOPÓTAMO|Grande mamífero africano dos rios","RINOCERONTE|Animal de pele grossa com chifre no focinho",
+"CHIMPANZÉ|Primata mais próximo do ser humano","LIBÉLULA|Inseto de asas transparentes que vive perto da água","ANACONDA|Grande serpente amazônica, a sucuri",
+"PIRARUCU|Gigante peixe de água doce da Amazônia","CAPIVARA|Maior roedor do mundo","TAMANDUÁ|Mamífero que come formigas",
+"SERINGUEIRA|Árvore da borracha","JABUTICABA|Fruta que nasce no tronco","CARAMBOLA|Fruta que, cortada, vira estrela",
+"PITANGA|Frutinha vermelha e azedinha","CATAPORA|Varicela","ANESTESIA|Elimina a dor nas cirurgias","VACINA|Imuniza contra doenças",
+"ANTIBIÓTICO|Remédio contra bactérias","CARTÓGRAFO|Profissional que faz mapas","LABIRINTO|Lugar cheio de caminhos que confundem",
+"ENIGMA|Mistério, charada","ODISSEIA|Poema épico de Homero sobre Ulisses","MITOLOGIA|Conjunto de mitos de um povo",
+"MINOTAURO|Ser metade homem, metade touro","PÉGASO|Cavalo alado da mitologia grega","CAPITU|Personagem de Dom Casmurro, de olhos de ressaca",
+"MODERNISMO|Movimento da Semana de 22","BARROCO|Estilo artístico de Aleijadinho","ALEIJADINHO|Escultor mineiro do barroco",
+"TIRADENTES|Mártir da Inconfidência Mineira","BRASÍLIA|Capital inaugurada em 1960","SALVADOR|Primeira capital do Brasil",
+"MANAUS|Capital do Amazonas","CURITIBA|Capital do Paraná","PORTUGAL|País que colonizou o Brasil","EGITO|País das pirâmides de Gizé",
+"JAPÃO|País do sol nascente","AUSTRÁLIA|País-continente dos cangurus","CONTINENTE|Ásia, África e Europa são exemplos",
+"LATITUDE|Distância em graus até a linha do Equador","LONGITUDE|Distância em graus até o meridiano de Greenwich",
+"EQUADOR|Linha imaginária que divide a Terra em dois hemisférios","TRÓPICO|Paralelo de Câncer ou de Capricórnio",
+"ATMOSFERA|Camada de gases que envolve a Terra","EVAPORAÇÃO|Passagem do líquido para vapor","MAGNETISMO|Propriedade de atração dos ímãs",
+"ELETRICIDADE|Energia que acende a lâmpada","VOCABULÁRIO|Conjunto das palavras de uma língua","PROTAGONISTA|Personagem principal"
+],
+avancado: [
+"EFÊMERO|Que dura pouco, passageiro","INEFÁVEL|Que não se pode exprimir em palavras","IDIOSSINCRASIA|Traço de comportamento peculiar a alguém",
+"PROLIXO|Que usa palavras demais","LACÔNICO|Que diz muito em poucas palavras","ÍNCLITO|Ilustre, célebre","PERNÓSTICO|Pedante, presunçoso",
+"ACRIMÔNIA|Aspereza no trato","ANACRONISMO|Erro de situar algo fora de sua época","ALVÍSSARAS|Recompensa por uma boa notícia",
+"ARREBOL|Vermelhidão do céu ao nascer ou ao pôr do sol","BALBÚRDIA|Confusão barulhenta","CHISTE|Dito engraçado, gracejo",
+"DESÍDIA|Preguiça, negligência","ESDRÚXULO|Extravagante; também, proparoxítono","FALÁCIA|Argumento enganoso",
+"HEDONISMO|Doutrina que vê o prazer como bem supremo","IMPÁVIDO|Destemido, como o colosso do Hino","LÚDICO|Relativo a jogos e brincadeiras",
+"MELÍFLUO|Doce como o mel; suave","NEFELIBATA|Quem vive nas nuvens, sonhador","OBSEQUIOSO|Excessivamente prestativo",
+"PARADOXO|Ideia aparentemente contraditória","PLÚMBEO|Da cor do chumbo","QUIMERA|Sonho impossível; monstro mitológico",
+"RESILIÊNCIA|Capacidade de se recuperar de adversidades","SICOFANTA|Bajulador, delator","SOLÍCITO|Disposto a ajudar",
+"TERGIVERSAR|Usar evasivas, fugir do assunto","UBÍQUO|Que está em toda parte","VERNÁCULO|Língua própria de um país",
+"ZÉFIRO|Vento suave e fresco","ESTULTÍCIA|Tolice, estupidez","FILANTROPO|Quem pratica a caridade","MISANTROPO|Quem tem aversão às pessoas",
+"PRESCIENTE|Que prevê o futuro","PUSILÂNIME|Covarde, fraco de ânimo","SOBERBA|Orgulho excessivo","SORUMBÁTICO|Tristonho, sombrio",
+"SUBTERFÚGIO|Pretexto para escapar de algo","CIZÂNIA|Discórdia, desarmonia","ÓBICE|Obstáculo, impedimento","PROFÍCUO|Útil, proveitoso",
+"ÉGIDE|Proteção, amparo","ESCORREITO|Correto, sem defeito","FLEUMÁTICO|Calmo, impassível","GRANDILOQUENTE|Que fala de modo pomposo",
+"INÓCUO|Inofensivo","IGNÓBIL|Desprezível, vil","LÂNGUIDO|Sem forças, abatido","LOQUAZ|Que fala muito","MAGNÂNIMO|Generoso, nobre de espírito",
+"MENDAZ|Mentiroso","OUTROSSIM|Igualmente, também","PERFUNCTÓRIO|Superficial, feito por mera rotina","PROCRASTINAR|Adiar, deixar para depois",
+"SERENDIPIDADE|Descoberta feliz feita por acaso","SOFISMA|Raciocínio falso com aparência de verdade","TÍBIO|Morno; sem entusiasmo",
+"VICISSITUDE|Mudança imprevista, revés","XENOFOBIA|Aversão a estrangeiros","ZOMBETEIRO|Que gosta de caçoar",
+"ALQUIMIA|Precursora medieval da química","ASTROLÁBIO|Antigo instrumento de navegação pelos astros","CALIGRAFIA|Arte da escrita à mão bem-feita",
+"EPISTEMOLOGIA|Estudo do conhecimento científico","ETIMOLOGIA|Estudo da origem das palavras","ONOMATOPEIA|Palavra que imita um som",
+"PALÍNDROMO|Lê-se igual de trás para a frente","HIPÉRBOLE|Figura de linguagem do exagero","PLEONASMO|Redundância como subir para cima",
+"ZEUGMA|Omissão de um termo já mencionado","ANÁFORA|Repetição de palavra no início de versos","OXÍMORO|Junção de termos contraditórios",
+"PROPAROXÍTONA|Tônica na antepenúltima sílaba","CREPÚSCULO|Claridade entre o pôr do sol e a noite","SOLSTÍCIO|Dia mais longo ou mais curto do ano",
+"EQUINÓCIO|Dia e noite de igual duração","PERIÉLIO|Ponto da órbita mais próximo do Sol","ENTROPIA|Medida da desordem de um sistema",
+"ISÓTOPO|Mesmo número atômico, massa diferente","CATALISADOR|Acelera a reação sem ser consumido","PLÂNCTON|Seres microscópicos que flutuam na água",
+"SIMBIOSE|Associação benéfica entre espécies","METAMORFOSE|Transformação, como a da lagarta","ACÓLITO|Ajudante, seguidor fiel",
+"BUCÓLICO|Relativo à vida no campo","DIÁFANO|Transparente, quase sem corpo","EPÍTOME|Resumo; exemplo perfeito de algo",
+"HERMÉTICO|Fechado; difícil de entender","ÍMPROBO|Desonesto","OPRÓBRIO|Vergonha extrema, desonra","PANACEIA|Remédio para todos os males"
+]
+};
+
+/* ===================== GERADOR DE PALAVRAS CRUZADAS =====================
+   Cada jogo é definido por (nível, semente). A mesma semente sempre gera o
+   mesmo tabuleiro, então um duelo só precisa guardar o nível e a semente.  */
+const NIVEIS = {
+  facil:         { key:'facil',         nome:'Fácil',         pontos:1, palavras:6,  max:9,  revelar:'primeira', dicas:3, prefixo:'F', salt:11 },
+  intermediario: { key:'intermediario', nome:'Intermediário', pontos:2, palavras:8,  max:12, revelar:0.15,       dicas:2, prefixo:'I', salt:23 },
+  dificil:       { key:'dificil',       nome:'Difícil',       pontos:3, palavras:10, max:14, revelar:0,          dicas:1, prefixo:'D', salt:37 },
+  avancado:      { key:'avancado',      nome:'Avançado',      pontos:4, palavras:12, max:16, revelar:0,          dicas:1, prefixo:'A', salt:53 }
+};
+const SEMENTES_POR_NIVEL = 100000; // jogos possíveis por nível (verificados > 5.000 distintos)
+
+function normaliza(w){ return w.normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z]/g,''); }
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function embaralha(arr,rnd){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+const BANCOS = {};
+for (const k in BANCO) BANCOS[k] = BANCO[k].map(s => { const i=s.indexOf('|'); return { original:s.slice(0,i), word:normaliza(s.slice(0,i)), clue:s.slice(i+1) }; });
+
+function tentaMontar(pool, L, rnd){
+  const N=48, grid=new Map(), placed=[];
+  const key=(r,c)=>r*N+c, get=(r,c)=>grid.get(key(r,c));
+  let minR=99,maxR=-1,minC=99,maxC=-1;
+  function put(w,r,c,dir){
+    for(let k=0;k<w.word.length;k++){
+      const rr=r+(dir==='V'?k:0), cc=c+(dir==='H'?k:0);
+      let cell=get(rr,cc); if(!cell){ cell={ch:w.word[k],H:false,V:false}; grid.set(key(rr,cc),cell); }
+      cell[dir]=true;
+      minR=Math.min(minR,rr);maxR=Math.max(maxR,rr);minC=Math.min(minC,cc);maxC=Math.max(maxC,cc);
+    }
+    placed.push({...w,r,c,dir});
+  }
+  function avalia(word,r,c,dir){
+    const dr=dir==='V'?1:0, dc=dir==='H'?1:0, len=word.length;
+    if(r<1||c<1||r+dr*len>=N-1||c+dc*len>=N-1) return -1;
+    if(get(r-dr,c-dc)||get(r+dr*len,c+dc*len)) return -1;
+    let cruz=0;
+    for(let k=0;k<len;k++){
+      const rr=r+dr*k, cc=c+dc*k, cell=get(rr,cc);
+      if(cell){ if(cell.ch!==word[k]||cell[dir]) return -1; cruz++; }
+      else if(dir==='H'){ if(get(rr-1,cc)||get(rr+1,cc)) return -1; }
+      else { if(get(rr,cc-1)||get(rr,cc+1)) return -1; }
+    }
+    return cruz;
+  }
+  const first=pool[0];
+  if(first.word.length>L.max) return null;
+  const d0 = rnd()<0.5?'H':'V';
+  put(first, d0==='H'?24:24-Math.floor(first.word.length/2), d0==='H'?24-Math.floor(first.word.length/2):24, d0);
+  const usadas=new Set([first.word]);
+  for(let i=1;i<pool.length && placed.length<L.palavras;i++){
+    const w=pool[i]; if(usadas.has(w.word)||w.word.length>L.max) continue;
+    let melhor=null;
+    for(const [k,cell] of grid){
+      const r0=Math.floor(k/N), c0=k%N;
+      for(let p=0;p<w.word.length;p++){
+        if(w.word[p]!==cell.ch) continue;
+        for(const dir of ['H','V']){
+          if(cell[dir]) continue;
+          const r=dir==='V'?r0-p:r0, c=dir==='H'?c0-p:c0;
+          const cruz=avalia(w.word,r,c,dir); if(cruz<1) continue;
+          const r2=dir==='V'?r+w.word.length-1:r, c2=dir==='H'?c+w.word.length-1:c;
+          const h=Math.max(maxR,r2)-Math.min(minR,r)+1, wd=Math.max(maxC,c2)-Math.min(minC,c)+1;
+          if(h>L.max||wd>L.max) continue;
+          const score=cruz*30 - h*wd*0.5 - Math.abs(h-wd)*2 + rnd()*12;
+          if(!melhor||score>melhor.score) melhor={r,c,dir,score};
+        }
+      }
+    }
+    if(melhor){ put(w,melhor.r,melhor.c,melhor.dir); usadas.add(w.word); }
+  }
+  if(placed.length<L.palavras) return null;
+  return { placed, minR, maxR, minC, maxC };
+}
+
+function gerarJogo(nivel, semente){
+  const L=NIVEIS[nivel];
+  for(let t=0;t<60;t++){
+    const rnd=mulberry32(((semente+1)*2654435761 ^ (t+1)*40503 ^ L.salt*97)>>>0);
+    const pool=embaralha(BANCOS[nivel].slice(),rnd);
+    const res=tentaMontar(pool,L,rnd);
+    if(!res) continue;
+    const rows=res.maxR-res.minR+1, cols=res.maxC-res.minC+1;
+    const cells=Array.from({length:rows},()=>Array(cols).fill(null));
+    const palavras=res.placed.map(p=>({ ...p, r:p.r-res.minR, c:p.c-res.minC }));
+    for(const p of palavras) for(let k=0;k<p.word.length;k++){
+      const r=p.r+(p.dir==='V'?k:0), c=p.c+(p.dir==='H'?k:0);
+      cells[r][c]={ ch:p.word[k], num:null };
+    }
+    const inicios=[...new Set(palavras.map(p=>p.r*100+p.c))].sort((a,b)=>a-b);
+    palavras.forEach(p=>{ p.num=inicios.indexOf(p.r*100+p.c)+1; cells[p.r][p.c].num=p.num; });
+    palavras.sort((a,b)=>a.num-b.num);
+    const revelada=new Set();
+    if(L.revelar==='primeira') palavras.forEach(p=>revelada.add(p.r+','+p.c));
+    else if(L.revelar>0){ for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) if(cells[r][c]&&rnd()<L.revelar) revelada.add(r+','+c); }
+    return { nivel, semente, id:L.prefixo+'-'+String(semente).padStart(5,'0'), rows, cols, cells, palavras, revelada };
+  }
+  return null;
+}
+
+/* ===================== MODO DEMONSTRAÇÃO =====================
+   Usado só quando API_URL está vazio: imita o backend do Apps Script
+   guardando tudo no navegador, com alguns jogadores fictícios.       */
+const LocalAPI = (() => {
+  const K = 'pc_demo_db_v1';
+  const CFG = { PONTOS:{facil:1,intermediario:2,dificil:3,avancado:4}, BONUS:5, PEN:2, VIT:10, DER:5, SEG_DICA:15, PRAZO:3 };
+  const hoje = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(new Date());
+  const agora = () => new Date().toISOString().slice(0,19);
+  const diff = (a,b) => Math.round((Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/86400000);
+  const soma = (d,n) => new Date(Date.parse(d+'T00:00:00Z')+n*86400000).toISOString().slice(0,10);
+  const uid = () => Math.random().toString(36).slice(2,10);
+  let db;
+  function load(){
+    let lido = null; try { lido = JSON.parse(localStorage.getItem(K)); } catch(e) {}
+    if (lido) db = lido;
+    if (!db) {
+      db = { users:[], log:[], duels:[] };
+      const bots = [['ana.letras','Ana Letras',2150],['joao_cruz','João Cruz',1360],['bia.verbo','Bia Verbo',930],['caio','Caio M.',470],
+                    ['lu_quiz','Lu Quiz',300],['pedro.p','Pedro P.',170],['marina','Marina',85],['tom','Tom',32],['rafa','Rafa',9]];
+      for (const [u,n,p] of bots) db.users.push({ username:u, nome:n, senha:'', token:'', pontos:p, criadoEm:hoje(), ultimoDia:hoje(), penalizadoAte:'',
+        sequencia:Math.floor(Math.random()*12), melhorSequencia:14, partidas:Math.floor(p/3), vitorias:Math.floor(p/120), derrotas:Math.floor(p/200), bot:true });
+    }
+  }
+  function save(){ try { localStorage.setItem(K, JSON.stringify(db)); } catch(e) {} }
+  const pub = u => ({ username:u.username, nome:u.nome, pontos:u.pontos, sequencia:u.sequencia, melhorSequencia:u.melhorSequencia, partidas:u.partidas,
+    vitorias:u.vitorias, derrotas:u.derrotas, criadoEm:u.criadoEm, ultimoDia:u.ultimoDia, jogouHoje:u.ultimoDia===hoje() });
+  const acha = n => db.users.find(u => u.username === String(n||'').toLowerCase());
+  const auth = t => { const u = t && db.users.find(x => x.token === t); if (!u) throw new Error('Sessão expirada. Faça login novamente.'); return u; };
+  const log = (u,tipo,nivel,gameId,pontos,saldo,detalhe) => db.log.push({ dataHora:agora(), dia:hoje(), username:u, tipo, nivel:nivel||'', gameId:gameId||'', pontos, saldo, detalhe:detalhe||'' });
+  function liquida(u){
+    if (u.bot) { u.ultimoDia = hoje(); return; }
+    const h = hoje(); let base = u.ultimoDia || u.criadoEm; if (u.penalizadoAte && u.penalizadoAte > base) base = u.penalizadoAte;
+    const f = diff(base,h)-1; if (f <= 0) return;
+    const perda = Math.min(Math.max(u.pontos,0), f*CFG.PEN);
+    u.pontos -= perda; u.penalizadoAte = soma(h,-1); u.sequencia = 0;
+    if (perda > 0) log(u.username,'penalidade','','',-perda,u.pontos,f+' dia(s) sem jogar');
+  }
+  function marcaDia(u){
+    const h = hoje(); if (u.ultimoDia === h) return 0;
+    u.sequencia = (u.ultimoDia && diff(u.ultimoDia,h) === 1) ? u.sequencia+1 : 1;
+    u.melhorSequencia = Math.max(u.sequencia, u.melhorSequencia); u.ultimoDia = h; u.pontos += CFG.BONUS; return CFG.BONUS;
+  }
+  function dpub(d, eu){
+    const a = d.desafiante === eu;
+    const op = acha(a ? d.desafiado : d.desafiante);
+    return { id:d.id, criadoEm:d.criadoEm, nivel:d.nivel, semente:d.semente, desafiante:d.desafiante, desafiado:d.desafiado, status:d.status, souDesafiante:a,
+      meuTempo: a ? d.msA : d.msB, tempoOponente: d.status==='finalizado' ? (a ? d.msB : d.msA) : null, oponenteTerminou: (a ? d.msB : d.msA) != null,
+      comecei: (a ? d.iniA : d.iniB) != null, vencedor:d.vencedor||'', finalizadoEm:d.finalizadoEm||'', nomeOponente: op ? op.nome : '' };
+  }
+  function resolve(d){
+    if (!['pendente','aceito'].includes(d.status)) return;
+    const prazo = diff(d.criadoEm.slice(0,10), hoje()) > CFG.PRAZO;
+    let v = null, p = null;
+    if (d.msA != null && d.msB != null) {
+      if (d.msA < d.msB) { v = d.desafiante; p = d.desafiado; } else if (d.msB < d.msA) { v = d.desafiado; p = d.desafiante; } else v = 'empate';
+    } else if (prazo) {
+      if (d.status === 'pendente' || (d.msA == null && d.msB == null)) { d.status = 'expirado'; d.finalizadoEm = agora(); return; }
+      if (d.msA != null) { v = d.desafiante; p = d.desafiado; } else { v = d.desafiado; p = d.desafiante; }
+    } else return;
+    d.status = 'finalizado'; d.vencedor = v; d.finalizadoEm = agora();
+    if (v === 'empate') return;
+    const uv = acha(v), up = acha(p);
+    if (uv) { uv.pontos += CFG.VIT; uv.vitorias++; log(uv.username,'duelo',d.nivel,'duelo:'+d.id,CFG.VIT,uv.pontos,'Vitória contra '+p); }
+    if (up) { up.pontos -= CFG.DER; up.derrotas++; log(up.username,'duelo',d.nivel,'duelo:'+d.id,-CFG.DER,up.pontos,'Derrota para '+v); }
+  }
+  const tempoBot = n => ({facil:[35,140],intermediario:[80,260],dificil:[150,420],avancado:[220,620]}[n]).reduce((a,b)=>a+Math.random()*(b-a)) * 1000 | 0;
+  const A = {
+    register(r){
+      const username = String(r.username||'').trim().toLowerCase(), nome = String(r.nome||'').trim().slice(0,24), senha = String(r.senha||'');
+      if (!/^[a-z0-9_.]{3,20}$/.test(username)) throw new Error('Usuário: 3 a 20 caracteres (letras, números, _ ou .).');
+      if (nome.length < 2) throw new Error('Informe um nome de exibição.');
+      if (senha.length < 4) throw new Error('A senha precisa ter ao menos 4 caracteres.');
+      if (acha(username)) throw new Error('Esse usuário já existe.');
+      const u = { username, nome, senha:btoa(unescape(encodeURIComponent(senha))), token:uid()+uid(), pontos:0, criadoEm:hoje(), ultimoDia:'', penalizadoAte:'',
+        sequencia:0, melhorSequencia:0, partidas:0, vitorias:0, derrotas:0 };
+      db.users.push(u);
+      // um desafio de boas-vindas para mostrar como o duelo funciona
+      db.duels.push({ id:uid(), criadoEm:agora(), nivel:'facil', semente:Math.floor(Math.random()*SEMENTES_POR_NIVEL), desafiante:'ana.letras', desafiado:username,
+        status:'pendente', iniA:1, iniB:null, msA:tempoBot('facil'), msB:null });
+      return { ok:true, token:u.token, user:pub(u) };
+    },
+    login(r){
+      const u = acha(r.username);
+      if (!u || u.bot || u.senha !== btoa(unescape(encodeURIComponent(String(r.senha||''))))) throw new Error('Usuário ou senha incorretos.');
+      u.token = uid()+uid(); liquida(u); return { ok:true, token:u.token, user:pub(u) };
+    },
+    me(r){ const u = auth(r.token); liquida(u); return { ok:true, user:pub(u) }; },
+    submit(r){
+      const u = auth(r.token); liquida(u);
+      if (!CFG.PONTOS[r.nivel]) throw new Error('Nível inválido.');
+      const gid = r.nivel+':'+r.semente;
+      if (db.log.some(l => l.username===u.username && l.gameId===gid && l.tipo==='partida')) return { ok:true, repetido:true, ganho:0, bonus:0, user:pub(u) };
+      const g = CFG.PONTOS[r.nivel], b = marcaDia(u);
+      u.pontos += g; u.partidas++;
+      if (b) log(u.username,'bonus','','',b,u.pontos-g,'Meta diária');
+      log(u.username,'partida',r.nivel,gid,g,u.pontos,Math.round(r.segundos||0)+'s');
+      return { ok:true, ganho:g, bonus:b, user:pub(u) };
+    },
+    ranking(){ db.users.forEach(liquida); return { ok:true, ranking: db.users.map(pub).sort((a,b)=>b.pontos-a.pontos||b.partidas-a.partidas) }; },
+    history(r){ const u = auth(r.token); liquida(u); return { ok:true, user:pub(u), historico: db.log.filter(l=>l.username===u.username).slice(-300) }; },
+    duelCreate(r){
+      const u = auth(r.token), op = acha(r.oponente);
+      if (!CFG.PONTOS[r.nivel]) throw new Error('Nível inválido.');
+      if (!op) throw new Error('Oponente não encontrado.');
+      if (op.username === u.username) throw new Error('Você não pode desafiar a si mesmo.');
+      if (db.duels.some(d => ['pendente','aceito'].includes(d.status) && [d.desafiante,d.desafiado].sort().join() === [u.username,op.username].sort().join()))
+        throw new Error('Já existe um duelo em aberto entre vocês.');
+      const d = { id:uid(), criadoEm:agora(), nivel:r.nivel, semente:Math.floor(Math.random()*SEMENTES_POR_NIVEL), desafiante:u.username, desafiado:op.username,
+        status:'pendente', iniA:null, iniB:null, msA:null, msB:null };
+      if (op.bot) { d.status = 'aceito'; d.iniB = 1; d.msB = tempoBot(r.nivel); }
+      db.duels.push(d); return { ok:true, duelo:dpub(d,u.username) };
+    },
+    duelList(r){
+      const u = auth(r.token); liquida(u);
+      const meus = db.duels.filter(d => d.desafiante===u.username || d.desafiado===u.username);
+      meus.forEach(resolve);
+      return { ok:true, user:pub(u), duelos: meus.slice(-60).reverse().map(d => dpub(d,u.username)) };
+    },
+    duelAccept(r){ const u = auth(r.token), d = db.duels.find(x=>x.id===r.id); if (!d || d.desafiado!==u.username || d.status!=='pendente') throw new Error('Desafio indisponível.'); d.status='aceito'; return { ok:true, duelo:dpub(d,u.username) }; },
+    duelDecline(r){ const u = auth(r.token), d = db.duels.find(x=>x.id===r.id); if (!d || d.desafiado!==u.username || d.status!=='pendente') throw new Error('Desafio indisponível.'); d.status='recusado'; d.finalizadoEm=agora(); return { ok:true, duelo:dpub(d,u.username) }; },
+    duelStart(r){
+      const u = auth(r.token), d = db.duels.find(x=>x.id===r.id); if (!d) throw new Error('Duelo não encontrado.');
+      const a = d.desafiante === u.username;
+      if (!a && d.desafiado !== u.username) throw new Error('Você não participa deste duelo.');
+      if (!a && d.status !== 'aceito') throw new Error('Aceite o desafio antes de jogar.');
+      if (!['pendente','aceito'].includes(d.status)) throw new Error('Este duelo já foi encerrado.');
+      if (a && d.iniA == null) d.iniA = Date.now(); if (!a && d.iniB == null) d.iniB = Date.now();
+      return { ok:true, duelo:dpub(d,u.username), inicio: a ? d.iniA : d.iniB, agora: Date.now() };
+    },
+    duelSubmit(r){
+      const u = auth(r.token), d = db.duels.find(x=>x.id===r.id); if (!d) throw new Error('Duelo não encontrado.');
+      const a = d.desafiante === u.username;
+      if ((a ? d.msA : d.msB) != null) return { ok:true, repetido:true, duelo:dpub(d,u.username), user:pub(u) };
+      const ini = a ? d.iniA : d.iniB; if (ini == null) throw new Error('Duelo não iniciado.');
+      const ms = r.desistiu ? 99999999 : (Date.now()-ini) + Math.max(0,r.dicas|0)*CFG.SEG_DICA*1000;
+      if (a) d.msA = ms; else d.msB = ms;
+      let b = 0; if (!r.desistiu) { liquida(u); b = marcaDia(u); if (b) log(u.username,'bonus','','',b,u.pontos,'Meta diária'); }
+      resolve(d);
+      return { ok:true, bonus:b, duelo:dpub(d,u.username), user:pub(u) };
+    }
+  };
+  return { call(action, data){ load(); try { const res = A[action](data||{}); save(); return res; } catch(e) { save(); return { ok:false, error:e.message }; } } };
+})();
+
+/* ===================== CATEGORIAS E EMBLEMAS ===================== */
+const TIERS = [
+  { nome:'Ferro',               min:-Infinity, c1:'#8fc1e3', c2:'#2f5373', forma:'escudo', perks:['Emblema de Ferro','Entrada no ranking'] },
+  { nome:'Bronze',              min:30,   c1:'#e8a96d', c2:'#8a4b1f', forma:'escudo', perks:['Moldura de bronze no ranking','Anel bronze no avatar'] },
+  { nome:'Prata',               min:80,   c1:'#eef2ff', c2:'#6b7a99', forma:'escudo', estrela:true, perks:['Nome com degradê prateado','Estrela no emblema'] },
+  { nome:'Ouro',                min:160,  c1:'#ffd94a', c2:'#b7791f', forma:'escudo', estrela:true, coroa:true, perks:['Coroa dourada ao lado do nome','Avatar com aura dourada','Faixa dourada no ranking'] },
+  { nome:'Platina',             min:280,  c1:'#9be7f2', c2:'#3a8fa3', forma:'hexagono', perks:['Brilho deslizante no cartão','Emblema hexagonal'] },
+  { nome:'Esmeralda',           min:450,  c1:'#5eead4', c2:'#047857', forma:'hexagono', estrela:true, perks:['Aura verde esmeralda','Brilho no cartão'] },
+  { nome:'Rubi',                min:650,  c1:'#fb7185', c2:'#9f1239', forma:'gema', perks:['Avatar com aura pulsante','Cartão rubi'] },
+  { nome:'Diamante',            min:900,  c1:'#93c5fd', c2:'#1d4ed8', forma:'gema', coroa:true, perks:['Diamante lapidado no emblema','Aura azul pulsante'] },
+  { nome:'Mestre das Palavras', min:1300, c1:'#c4b5fd', c2:'#6d28d9', forma:'estrela', asas:true, perks:['Asas no emblema','Título de Mestre','Cartão violeta brilhante'] },
+  { nome:'Lenda do Dicionário', min:2000, c1:'#fbbf24', c2:'#dc2626', forma:'estrela', asas:true, coroa:true, perks:['Moldura de fogo animada','Coroa + asas lendárias','O topo da glória'] }
+];
+function tierIdx(p){ let i=0; TIERS.forEach((t,k)=>{ if(p>=t.min) i=k; }); return i; }
+let _gid=0;
+function emblema(i, size=40){
+  const t=TIERS[i], id='g'+(++_gid);
+  const formas={
+    escudo:'M32 6 L54 13 V31 C54 46 44 55 32 59 C20 55 10 46 10 31 V13 Z',
+    hexagono:'M32 5 L55 18 V45 L32 59 L9 45 V18 Z',
+    gema:'M19 10 H45 L57 25 L32 58 L7 25 Z',
+    estrela:(()=>{ let s=''; for(let k=0;k<10;k++){ const a=-Math.PI/2+k*Math.PI/5, r=k%2?12:26; s+=(k?'L':'M')+(32+r*Math.cos(a)).toFixed(1)+' '+(34+r*Math.sin(a)).toFixed(1)+' '; } return s+'Z'; })()
+  };
+  let extra='';
+  if(t.asas) extra+=`<path d="M14 32 C4 30 1 20 3 12 C7 19 12 22 18 24 Z M50 32 C60 30 63 20 61 12 C57 19 52 22 46 24 Z" fill="url(#${id})" stroke="${t.c2}" stroke-width="1.5"/>`;
+  extra+=`<path d="${formas[t.forma]}" fill="url(#${id})" stroke="${t.c2}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  if(t.forma==='escudo') extra+=`<path d="M32 12 L48 17 V31 C48 42 41 49 32 52" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/>`;
+  if(t.forma==='gema') extra+=`<path d="M7 25 H57 M19 10 L26 25 L32 58 L38 25 L45 10 M26 25 L32 10 L38 25" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.6"/>`;
+  if(t.forma==='hexagono') extra+=`<path d="M32 13 L47 22 V41 L32 50 L17 41 V22 Z" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/>`;
+  if(t.estrela) extra+=`<path d="M32 23 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5-3.4 -6.5 3.4 1.3-7.2 -5.2-5 7.2-1z" fill="#fff" opacity=".92"/>`;
+  else if(t.forma==='escudo') extra+=`<text x="32" y="40" text-anchor="middle" font-size="17" font-weight="900" fill="#fff" font-family="Nunito,sans-serif" opacity=".92">${['I','II'][i]||''}</text>`;
+  if(t.coroa) extra+=`<path d="M22 9 L25 0 L32 6 L39 0 L42 9 Z" fill="#ffd43b" stroke="#b7791f" stroke-width="1.5" stroke-linejoin="round" transform="translate(0 ${t.forma==='estrela'?2:1})"/>`;
+  return `<span class="emb" title="${t.nome}"><svg width="${size}" height="${size}" viewBox="0 -2 64 66" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="${t.c1}"/><stop offset="1" stop-color="${t.c2}"/></linearGradient></defs>${extra}</svg></span>`;
+}
+const tvars = i => `--c1:${TIERS[i].c1};--c2:${TIERS[i].c2}`;
+
+/* ===================== UTILITÁRIOS ===================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = { get(k,d){ try{ const v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }, del(k){ try{ localStorage.removeItem(k); }catch(e){} } };
+const fmtT = ms => { const s=Math.max(0,Math.floor(ms/1000)); return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); };
+const fmtPts = n => (n>0?'+':'')+n;
+let toastT; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3200); }
+function modal(html){ $('#modalBox').innerHTML=html; $('#modal').classList.add('on'); }
+function fechaModal(){ $('#modal').classList.remove('on'); }
+$('#modal').addEventListener('click', e => { if(e.target.id==='modal') fechaModal(); });
+
+async function api(action, data={}){
+  let r;
+  if(!API_URL) { await new Promise(res=>setTimeout(res,120)); r = LocalAPI.call(action, data); }
+  else {
+    const resp = await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({ action, ...data }) });
+    r = await resp.json();
+  }
+  if(!r.ok){
+    if(/Sess[aã]o|login novamente/i.test(r.error||'')) { sair(true); }
+    throw new Error(r.error||'Erro de comunicação.');
+  }
+  if(r.user) setUser(r.user);
+  return r;
+}
+
+/* ===================== ESTADO / USUÁRIO ===================== */
+const S = { token:store.get('pc_token',null), user:null, nivel:store.get('pc_nivel','facil'), jogo:null, ent:{}, at:null, dir:'H', inicio:0, dicas:0,
+  fim:false, modo:'normal', duelo:null, timer:null, ranking:[], duelos:[], view:'jogar' };
+
+function setUser(u){ S.user=u; renderUser(); }
+function renderUser(){
+  const a=$('#userArea');
+  if(!S.user){ a.innerHTML=`<button class="btn sm" id="btnEntrar">Entrar</button>`; $('#btnEntrar').onclick=()=>abreAuth('criar'); return; }
+  const i=tierIdx(S.user.pontos);
+  a.innerHTML=`<button class="chip" id="btnMe" style="${tvars(i)}" title="${TIERS[i].nome}">${emblema(i,28)}<span class="nm">${esc(S.user.nome)}</span><span class="pts">${S.user.pontos}</span></button>`;
+  $('#btnMe').onclick=()=>modal(`<div class="centro">${emblema(i,72)}<h2 style="margin-top:8px">${esc(S.user.nome)}</h2><p class="muted">@${esc(S.user.username)} · ${TIERS[i].nome} · ${S.user.pontos} pontos</p>
+    <p>${S.user.jogouHoje?'✅ Meta diária cumprida hoje':'🎯 Jogue hoje para ganhar +5 da meta diária'}</p>
+    <button class="btn sec" onclick="fechaModal()">Fechar</button> <button class="btn bad" onclick="sair()">Sair</button></div>`);
+}
+function sair(silencioso){ S.token=null; S.user=null; store.del('pc_token'); renderUser(); fechaModal(); if(!silencioso) toast('Você saiu.'); if(S.modo==='duelo') saiFoco(); else renderNiveis(); if(S.view!=='jogar') mostra(S.view); }
+
+function abreAuth(aba='entrar'){
+  modal(`<div class="seg"><button data-a="entrar" class="${aba==='entrar'?'on':''}">Entrar</button><button data-a="criar" class="${aba==='criar'?'on':''}">Criar usuário</button></div>
+  <form id="fAuth">
+    <div id="campoNome" style="${aba==='criar'?'':'display:none'}"><label>Nome de exibição</label><input class="f" name="nome" maxlength="24" placeholder="Como você aparece no ranking"></div>
+    <label>Usuário</label><input class="f" name="username" autocomplete="username" autocapitalize="none" placeholder="ex.: lucas_ribeiro">
+    <label>Senha</label><input class="f" type="password" name="senha" autocomplete="${aba==='criar'?'new-password':'current-password'}">
+    <div class="erro-msg" id="authErr"></div>
+    <button class="btn" style="width:100%;margin-top:6px" id="authBtn">${aba==='criar'?'Criar usuário':'Entrar'}</button>
+  </form>`);
+  document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>abreAuth(b.dataset.a));
+  $('#fAuth').onsubmit=async e=>{
+    e.preventDefault(); const f=new FormData(e.target), btn=$('#authBtn'); btn.disabled=true; $('#authErr').textContent='';
+    try{
+      const r = await api(aba==='criar'?'register':'login', { nome:f.get('nome'), username:f.get('username'), senha:f.get('senha') });
+      S.token=r.token; store.set('pc_token',r.token); fechaModal(); toast(aba==='criar'?'Bem-vindo(a), '+r.user.nome+'!':'Olá de novo, '+r.user.nome+'!');
+      atualizaDuelosBadge(); renderNiveis(); if(S.view!=='jogar') mostra(S.view);
+    }catch(err){ $('#authErr').textContent=err.message; btn.disabled=false; }
+  };
+}
+
+/* ===================== NAVEGAÇÃO ===================== */
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>mostra(b.dataset.v));
+function mostra(v){
+  S.view=v;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+  if(v==='ranking') viewRanking(); if(v==='evolucao') viewEvolucao(); if(v==='recompensas') viewRecompensas(); if(v==='duelos') viewDuelos();
+  window.scrollTo(0,0);
+}
+
+/* ===================== JOGO ===================== */
+const TOUCH = matchMedia('(pointer:coarse)').matches;
+document.body.classList.toggle('touch', TOUCH);
+function renderNiveis(){
+  const desc={ facil:'Grade até 9×9 · 6 palavras curtas · 1ª letra de cada palavra revelada', intermediario:'Grade até 12×12 · 8 palavras · algumas letras reveladas',
+    dificil:'Grade até 14×14 · 10 palavras longas · nenhuma letra revelada', avancado:'Grade até 16×16 · 12 palavras raras e eruditas · sem letras reveladas' };
+  $('#niveis').innerHTML=Object.values(NIVEIS).map((L,k)=>`<button class="nivel" data-n="${L.key}"><span class="p">${L.pontos} pt${L.pontos>1?'s':''}</span><b>${L.nome}</b><div class="dots">${'●'.repeat(k+1)}${'○'.repeat(3-k)}</div><small>${desc[L.key]}</small><span class="go">Jogar →</span></button>`).join('');
+  document.querySelectorAll('.nivel').forEach(b=>b.onclick=()=>{ S.nivel=b.dataset.n; store.set('pc_nivel',S.nivel); novoJogo(); });
+  $('#lobbyInfo').innerHTML = S.user ? (S.user.jogouHoje ? '✅ Meta diária de hoje cumprida. Continue jogando para subir no ranking.' : '🎯 Conclua uma partida hoje para ganhar <b>+5</b> da meta diária.') : 'Cada partida é sorteada entre milhares de jogos diferentes. Crie um usuário para somar pontos.';
+}
+function entraFoco(){ $('#partida').classList.add('on'); document.body.classList.add('foco'); requestAnimationFrame(ajustaTamanho); }
+function saiFoco(){ $('#partida').classList.remove('on'); document.body.classList.remove('foco'); $('#painelPistas').classList.remove('aberto'); clearInterval(S.timer); S.modo='normal'; S.duelo=null; S.jogo=null; renderNiveis(); }
+function ajustaTamanho(){
+  if(!S.jogo) return;
+  const w=$('#boardWrap'), sz=Math.floor(Math.min(48, (w.clientWidth-4)/S.jogo.cols, (w.clientHeight-4)/S.jogo.rows));
+  $('#board').style.setProperty('--sz', Math.max(20,sz)+'px');
+}
+addEventListener('resize', ajustaTamanho);
+(function(){ const rows=['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'];
+  $('#teclado').innerHTML=rows.map((r,i)=>`<div class="lin">${i===2?'<button class="lg" data-k="next" aria-label="Próxima pista">⇥</button>':''}${[...r].map(c=>`<button data-k="${c}">${c}</button>`).join('')}${i===2?'<button class="lg" data-k="del" aria-label="Apagar">⌫</button>':''}</div>`).join('');
+  $('#teclado').addEventListener('pointerdown',e=>{ const b=e.target.closest('button'); if(!b) return; e.preventDefault(); const k=b.dataset.k;
+    if(k==='del') apagar(true); else if(k==='next') pulaPalavra(1); else letra(k); });
+})();
+function chaveJogados(){ return 'pc_jogados_'+(S.user?S.user.username:'_')+'_'+S.nivel; }
+function novoJogo(){
+  S.modo='normal'; S.duelo=null;
+  const jog=new Set(store.get(chaveJogados(),[]));
+  let s; for(let k=0;k<80;k++){ s=Math.floor(Math.random()*SEMENTES_POR_NIVEL); if(!jog.has(s)) break; }
+  iniciaJogo(gerarJogo(S.nivel,s), Date.now());
+}
+function iniciaJogo(g, inicio){
+  S.jogo=g; S.ent={}; S.fim=false; S.dicas=0; S.inicio=inicio;
+  g.revelada.forEach(k=>{ const [r,c]=k.split(',').map(Number); S.ent[k]=g.cells[r][c].ch; });
+  S.mapa={}; g.palavras.forEach((p,i)=>{ for(let k=0;k<p.word.length;k++){ const r=p.r+(p.dir==='V'?k:0), c=p.c+(p.dir==='H'?k:0), key=r+','+c; (S.mapa[key]=S.mapa[key]||{})[p.dir]=i; } });
+  entraFoco(); renderBoard(); renderPistas(); ajustaTamanho();
+  $('#jogoNivel').textContent=(S.modo==='duelo'?'⚔️ Duelo · ':'')+NIVEIS[g.nivel].nome; $('#jogoId').textContent='#'+g.id;
+  const ban=$('#duelBan');
+  if(S.modo==='duelo'){ const d=S.duelo; ban.innerHTML=`⚔️ Duelo contra ${esc(d.nomeOponente||(d.souDesafiante?d.desafiado:d.desafiante))}: termine o mais rápido possível! Cada dica soma +15 s.`; ban.classList.add('on'); }
+  else ban.classList.remove('on');
+  atualizaDica();
+  clearInterval(S.timer); S.timer=setInterval(()=>{ if(!S.fim) $('#tempo').textContent=fmtT(Date.now()-S.inicio); },500);
+  $('#tempo').textContent=fmtT(Date.now()-S.inicio);
+  const p=g.palavras[0]; selec(p.r,p.c,p.dir,false);
+}
+function atualizaDica(){ const L=NIVEIS[S.jogo.nivel], rest=L.dicas-S.dicas; $('#dicaN').textContent=rest; $('#btnDica').disabled=rest<=0||S.fim; $('#btnVerificar').disabled=S.fim; $('#btnDesistir').disabled=S.fim; }
+function renderBoard(){
+  const g=S.jogo, b=$('#board'); b.style.setProperty('--cols',g.cols); let h='';
+  for(let r=0;r<g.rows;r++) for(let c=0;c<g.cols;c++){
+    const cell=g.cells[r][c], k=r+','+c;
+    if(!cell){ h+='<div class="cel"></div>'; continue; }
+    const fixa=g.revelada.has(k);
+    h+=`<div class="cel v ${fixa?'fixa':''}" data-k="${k}">${cell.num?`<span class="n">${cell.num}</span>`:''}<input inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="linha ${r+1} coluna ${c+1}" value="${S.ent[k]||''}" ${fixa||TOUCH?'readonly':''} ${TOUCH?'inputmode="none" tabindex="-1"':''}></div>`;
+  }
+  b.innerHTML=h;
+  b.querySelectorAll('.cel.v').forEach(el=>{
+    const inp=el.querySelector('input'), [r,c]=el.dataset.k.split(',').map(Number);
+    inp.addEventListener('mousedown',e=>{ e.preventDefault(); clique(r,c); });
+    inp.addEventListener('touchend',e=>{ e.preventDefault(); clique(r,c); });
+    inp.addEventListener('focus',()=>{ inp.select(); if(!S.at||S.at[0]!==r||S.at[1]!==c) selec(r,c,S.dir,false); });
+    inp.addEventListener('keydown',e=>tecla(e,r,c));
+    inp.addEventListener('input',()=>digita(inp,r,c));
+  });
+}
+function renderPistas(){
+  const g=S.jogo;
+  ['H','V'].forEach(d=>{
+    $('#p'+d).innerHTML=g.palavras.map((p,i)=>p.dir!==d?'':`<li data-i="${i}"><b>${p.num}</b><span>${esc(p.clue)} <em>(${p.word.length})</em></span></li>`).join('');
+  });
+  document.querySelectorAll('.pistas li').forEach(li=>li.onclick=()=>{ const p=g.palavras[+li.dataset.i]; const k=primeiraVazia(p); selec(k[0],k[1],p.dir,true); $('#painelPistas').classList.remove('aberto'); });
+}
+function cellsDe(p){ const a=[]; for(let k=0;k<p.word.length;k++) a.push([p.r+(p.dir==='V'?k:0), p.c+(p.dir==='H'?k:0)]); return a; }
+function primeiraVazia(p){ return cellsDe(p).find(([r,c])=>!S.ent[r+','+c]) || [p.r,p.c]; }
+function palavraAtual(){ if(!S.at) return null; const m=S.mapa[S.at.join(',')]; const i=m[S.dir]!=null?m[S.dir]:m[S.dir==='H'?'V':'H']; return S.jogo.palavras[i]; }
+function clique(r,c){
+  const m=S.mapa[r+','+c]; let d=S.dir;
+  if(S.at&&S.at[0]===r&&S.at[1]===c){ if(m.H!=null&&m.V!=null) d=d==='H'?'V':'H'; }
+  else if(m[d]==null) d=d==='H'?'V':'H';
+  selec(r,c,d,true);
+}
+function selec(r,c,d,foca=true){
+  const m=S.mapa[r+','+c]; if(!m) return;
+  if(m[d]==null) d=d==='H'?'V':'H';
+  S.at=[r,c]; S.dir=d;
+  const p=palavraAtual(), set=new Set(cellsDe(p).map(x=>x.join(',')));
+  document.querySelectorAll('#board .cel.v').forEach(el=>{ el.classList.toggle('hl',set.has(el.dataset.k)); el.classList.toggle('at',el.dataset.k===r+','+c); });
+  const idx=S.jogo.palavras.indexOf(p);
+  document.querySelectorAll('.pistas li').forEach(li=>li.classList.toggle('on',+li.dataset.i===idx));
+  $('#pistaAtual').innerHTML=`<b>${p.num} ${p.dir==='H'?'Horizontal':'Vertical'}</b><span>${esc(p.clue)} (${p.word.length})</span>`;
+  if(foca&&!TOUCH){ const inp=document.querySelector(`#board .cel[data-k="${r},${c}"] input`); if(inp&&document.activeElement!==inp) inp.focus({preventScroll:true}); else if(inp) inp.select(); }
+}
+function setCel(r,c,ch){ const k=r+','+c; if(S.jogo.revelada.has(k)) return; S.ent[k]=ch; const el=document.querySelector(`#board .cel[data-k="${k}"]`); el.querySelector('input').value=ch; el.classList.remove('erro'); }
+function avanca(passo){
+  const p=palavraAtual(), cs=cellsDe(p); let i=cs.findIndex(([r,c])=>r===S.at[0]&&c===S.at[1]);
+  for(let t=0;t<cs.length;t++){ i+=passo; if(i<0||i>=cs.length) return; const k=cs[i].join(','); if(!S.jogo.revelada.has(k)){ selec(cs[i][0],cs[i][1],S.dir); return; } }
+}
+function digita(inp,r,c){
+  if(S.fim){ inp.value=S.ent[r+','+c]||''; return; }
+  const ch=normaliza(inp.value).slice(-1);
+  if(!ch){ inp.value=S.ent[r+','+c]||''; return; }
+  setCel(r,c,ch); avanca(1); marcaFeitas(); checaFim();
+}
+function tecla(e,r,c){
+  const k=e.key;
+  if(k==='Backspace'||k==='Delete'){ e.preventDefault(); apagar(k==='Backspace'); return; }
+  if(TOUCH&&/^[a-zA-Z]$/.test(k)){ e.preventDefault(); letra(k.toUpperCase()); return; }
+  const mv={ArrowRight:[0,1,'H'],ArrowLeft:[0,-1,'H'],ArrowDown:[1,0,'V'],ArrowUp:[-1,0,'V']}[k];
+  if(mv){ e.preventDefault(); let rr=r+mv[0], cc=c+mv[1]; while(rr>=0&&cc>=0&&rr<S.jogo.rows&&cc<S.jogo.cols){ if(S.mapa[rr+','+cc]){ selec(rr,cc,mv[2]); return; } rr+=mv[0]; cc+=mv[1]; } return; }
+  if(k==='Enter'||k==='Tab'){ e.preventDefault(); pulaPalavra(e.shiftKey?-1:1); return; }
+  if(k===' '){ e.preventDefault(); clique(r,c); }
+}
+function pulaPalavra(passo){ const ps=S.jogo.palavras, i=ps.indexOf(palavraAtual()), n=ps[(i+passo+ps.length)%ps.length], f=primeiraVazia(n); selec(f[0],f[1],n.dir); }
+function letra(ch){
+  if(S.fim||!S.at) return;
+  let [r,c]=S.at; if(S.jogo.revelada.has(r+','+c)){ avanca(1); [r,c]=S.at; if(S.jogo.revelada.has(r+','+c)) return; }
+  setCel(r,c,ch); avanca(1); marcaFeitas(); checaFim();
+}
+function apagar(voltar){
+  if(S.fim||!S.at) return; const [r,c]=S.at, key=r+','+c;
+  if(S.ent[key]&&!S.jogo.revelada.has(key)) setCel(r,c,''); else if(voltar){ avanca(-1); const [rr,cc]=S.at; setCel(rr,cc,''); }
+  marcaFeitas();
+}
+function marcaFeitas(){
+  document.querySelectorAll('.pistas li').forEach(li=>{ const p=S.jogo.palavras[+li.dataset.i]; li.classList.toggle('feito', cellsDe(p).every(([r,c])=>S.ent[r+','+c])); });
+}
+function correto(){ return S.jogo.palavras.every(p=>cellsDe(p).every(([r,c])=>S.ent[r+','+c]===S.jogo.cells[r][c].ch)); }
+function checaFim(){ if(!S.fim && correto()) conclui(false); }
+
+$('#btnVerificar').onclick=()=>{
+  let erros=0, vazias=0;
+  document.querySelectorAll('#board .cel.v').forEach(el=>{ const k=el.dataset.k, [r,c]=k.split(',').map(Number), v=S.ent[k];
+    if(!v) vazias++; else if(v!==S.jogo.cells[r][c].ch){ erros++; el.classList.add('erro'); } });
+  toast(erros?`${erros} letra(s) errada(s) marcada(s) em vermelho.`: vazias?`Tudo certo até aqui! Faltam ${vazias} letra(s).`:'Tudo certo!');
+};
+$('#btnDica').onclick=()=>{
+  const L=NIVEIS[S.jogo.nivel]; if(S.fim||S.dicas>=L.dicas) return;
+  const p=palavraAtual(); const alvo=cellsDe(p).find(([r,c])=>S.ent[r+','+c]!==S.jogo.cells[r][c].ch);
+  if(!alvo){ toast('Essa palavra já está correta. Escolha outra.'); return; }
+  S.dicas++; const [r,c]=alvo; setCel(r,c,S.jogo.cells[r][c].ch); S.jogo.revelada.add(r+','+c);
+  const el=document.querySelector(`#board .cel[data-k="${r},${c}"]`); el.classList.add('fixa'); el.querySelector('input').readOnly=true;
+  atualizaDica(); marcaFeitas(); if(S.modo==='duelo') toast('+15 s de penalidade no duelo.'); checaFim();
+};
+$('#btnDesistir').onclick=async()=>{
+  if(S.fim) return;
+  if(S.modo==='duelo'){ if(!confirm('Desistir do duelo? Isso conta como derrota quando o duelo for encerrado.')) return; conclui(true); return; }
+  if(!confirm('Mostrar a solução? Este jogo não vai valer pontos.')) return;
+  conclui(true);
+};
+$('#btnSair').onclick=()=>{
+  if(!S.fim){ if(!confirm(S.modo==='duelo'?'Sair do duelo? O tempo continua contando e você pode voltar pela aba Duelos.':'Sair desta partida? O progresso será perdido.')) return; }
+  const duelo=S.modo==='duelo'; saiFoco(); if(duelo) mostra('duelos');
+};
+$('#btnPistas').onclick=()=>$('#painelPistas').classList.toggle('aberto');
+$('#fechaPistas').onclick=()=>$('#painelPistas').classList.remove('aberto');
+$('#pPrev').onclick=()=>pulaPalavra(-1);
+$('#pNext').onclick=()=>pulaPalavra(1);
+
+async function conclui(desistiu){
+  S.fim=true; const ms=Date.now()-S.inicio; atualizaDica();
+  const g=S.jogo;
+  document.querySelectorAll('#board .cel.v').forEach((el,i)=>{ const [r,c]=el.dataset.k.split(',').map(Number); el.querySelector('input').value=g.cells[r][c].ch; if(!desistiu) setTimeout(()=>el.classList.add('ok'),i*12); });
+  if(S.modo==='duelo'){
+    try{
+      const r=await api('duelSubmit',{ token:S.token, id:S.duelo.id, dicas:S.dicas, desistiu });
+      const d=r.duelo; S.duelo=d; atualizaDuelosBadge();
+      const bon=r.bonus?`<p class="mais">+${r.bonus} meta diária!</p>`:'';
+      if(d.status==='finalizado') modal(resultadoDuelo(d)+bon+`<div class="centro"><button class="btn" onclick="fechaModal();saiFoco();mostra('duelos')">Ver duelos</button></div>`);
+      else modal(`<div class="centro"><div style="font-size:44px">⏱️</div><h2>${desistiu?'Você desistiu':'Seu tempo: '+fmtT(d.meuTempo)}</h2><p class="muted">Agora é a vez de <b>${esc(d.nomeOponente||'seu oponente')}</b>. Quando terminar, o resultado aparece na aba Duelos.</p>${bon}<button class="btn" onclick="fechaModal();saiFoco();mostra('duelos')">Ok</button></div>`);
+    }catch(e){ toast(e.message); }
+    return;
+  }
+  if(desistiu){ modal(`<div class="centro"><h2>Solução revelada</h2><p class="muted">Este jogo não vale pontos. Que tal outro?</p><button class="btn" onclick="fechaModal();novoJogo()">Novo jogo</button> <button class="btn sec" onclick="fechaModal()">Ver solução</button> <button class="btn sec" onclick="fechaModal();saiFoco()">Menu</button></div>`); return; }
+  const jog=store.get(chaveJogados(),[]); jog.push(g.semente); store.set(chaveJogados(),jog.slice(-5000));
+  const L=NIVEIS[g.nivel];
+  if(!S.user){ modal(`<div class="centro"><div style="font-size:44px">🎉</div><h2>Concluído em ${fmtT(ms)}!</h2><p>Este jogo valeria <b>${L.pontos} ponto(s)</b>. Crie um usuário para somar pontos, subir no ranking e liberar emblemas.</p><button class="btn" onclick="abreAuth('criar')">Criar usuário</button> <button class="btn sec" onclick="fechaModal();novoJogo()">Próximo jogo</button> <button class="btn sec" onclick="fechaModal();saiFoco()">Menu</button></div>`); return; }
+  try{
+    const antes=tierIdx(S.user.pontos);
+    const r=await api('submit',{ token:S.token, nivel:g.nivel, semente:g.semente, segundos:ms/1000 });
+    const depois=tierIdx(r.user.pontos);
+    modal(`<div class="centro"><div style="font-size:44px">🎉</div><h2>Concluído em ${fmtT(ms)}!</h2>
+      ${r.repetido?'<p class="muted">Você já tinha pontuado neste jogo.</p>':`<p class="mais" style="font-size:22px">+${r.ganho} ponto${r.ganho>1?'s':''}</p>`}
+      ${r.bonus?`<p class="mais">+${r.bonus} pela meta diária 🔥 sequência de ${r.user.sequencia} dia(s)</p>`:''}
+      ${depois>antes?`<div style="margin:10px 0">${emblema(depois,64)}<p><b>Nova categoria: ${TIERS[depois].nome}!</b></p></div>`:''}
+      <p class="muted">Total: ${r.user.pontos} pontos</p>
+      <button class="btn" onclick="fechaModal();novoJogo()">Próximo jogo</button> <button class="btn sec" onclick="fechaModal();saiFoco()">Menu</button></div>`);
+  }catch(e){ toast(e.message); }
+}
+
+/* ===================== DUELOS ===================== */
+function resultadoDuelo(d){
+  const ven=d.vencedor===S.user.username, emp=d.vencedor==='empate';
+  return `<div class="centro"><div style="font-size:44px">${emp?'🤝':ven?'🏆':'💥'}</div><h2>${emp?'Empate!':ven?'Você venceu o duelo!':'Você perdeu o duelo'}</h2>
+  <p>Você: <b>${d.meuTempo>=99999999?'desistiu':d.meuTempo!=null?fmtT(d.meuTempo):'não jogou'}</b> · ${esc(d.nomeOponente||'Oponente')}: <b>${d.tempoOponente>=99999999?'desistiu':d.tempoOponente!=null?fmtT(d.tempoOponente):'não jogou'}</b></p>
+  <p class="${emp?'':ven?'mais':'menos'}" style="font-size:20px">${emp?'0 pontos':ven?'+10 pontos':'−5 pontos'}</p></div>`;
+}
+async function atualizaDuelosBadge(){
+  if(!S.user){ $('#bdDuelo').innerHTML=''; return; }
+  try{ const r=await api('duelList',{token:S.token}); S.duelos=r.duelos; }catch(e){ return; }
+  const n=S.duelos.filter(d=>(d.status==='pendente'&&!d.souDesafiante)||(['pendente','aceito'].includes(d.status)&&d.meuTempo==null&&(d.souDesafiante||d.status==='aceito'))).length;
+  $('#bdDuelo').innerHTML=n?`<span class="badge">${n}</span>`:'';
+}
+async function viewDuelos(opPre){
+  const v=$('#v-duelos');
+  if(!S.user){ v.innerHTML=precisaLogin('desafiar outros jogadores'); return; }
+  v.innerHTML='<div class="vazio">Carregando duelos…</div>';
+  try{ const [r,rk]=await Promise.all([api('duelList',{token:S.token}), api('ranking')]); S.duelos=r.duelos; S.ranking=rk.ranking; }catch(e){ v.innerHTML=`<div class="vazio">${esc(e.message)}</div>`; return; }
+  const ops=S.ranking.filter(u=>u.username!==S.user.username);
+  const recebidos=S.duelos.filter(d=>d.status==='pendente'&&!d.souDesafiante);
+  const jogar=S.duelos.filter(d=>['pendente','aceito'].includes(d.status)&&d.meuTempo==null&&(d.souDesafiante||d.status==='aceito'));
+  const aguardando=S.duelos.filter(d=>['pendente','aceito'].includes(d.status)&&d.meuTempo!=null);
+  const encerrados=S.duelos.filter(d=>['finalizado','recusado','expirado'].includes(d.status));
+  const nomeOp=d=>esc(d.nomeOponente||(d.souDesafiante?d.desafiado:d.desafiante));
+  const linha=(d,acoes,extra='')=>`<div class="duelo"><div class="inf"><b>${d.souDesafiante?'Você desafiou':'Desafio de'} ${nomeOp(d)}</b><div class="small muted">${NIVEIS[d.nivel].nome} · ${d.criadoEm.slice(0,10).split('-').reverse().join('/')}${extra}</div></div>${acoes}</div>`;
+  const resTag=d=>{ if(d.status==='recusado') return '<span class="res e">Recusado</span>'; if(d.status==='expirado') return '<span class="res e">Expirado</span>';
+    if(d.vencedor==='empate') return '<span class="res e">Empate</span>'; return d.vencedor===S.user.username?'<span class="res v">Vitória +10</span>':'<span class="res d">Derrota −5</span>'; };
+  v.innerHTML=`<h2>Duelos</h2><div class="dgrid">
+    <div class="card"><h3>Novo desafio</h3>
+      <label>Oponente</label><select class="f" id="dOp">${ops.map(u=>`<option value="${esc(u.username)}" ${u.username===opPre?'selected':''}>${esc(u.nome)} (@${esc(u.username)}) · ${u.pontos} pts</option>`).join('')}</select>
+      <label>Nível</label><select class="f" id="dNv">${Object.values(NIVEIS).map(L=>`<option value="${L.key}">${L.nome}</option>`).join('')}</select>
+      <button class="btn" style="width:100%;margin-top:14px" id="dGo" ${ops.length?'':'disabled'}>⚔️ Desafiar e jogar agora</button>
+      <h3 style="margin-top:20px">Como funciona</h3>
+      <ul class="regras"><li>Os dois recebem exatamente o mesmo tabuleiro.</li><li>Não precisa ser ao mesmo tempo: o desafiado joga quando aceitar.</li><li>Vence quem terminar mais rápido (cada dica soma +15 s; desistir conta como derrota).</li><li>Vencedor <b class="mais">+10</b>, perdedor <b class="menos">−5</b>; o saldo pode ficar negativo.</li><li>O duelo expira em ${3} dias. Se só um terminou, ele vence.</li></ul>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px"><h3>Desafios recebidos</h3>${recebidos.length?recebidos.map(d=>linha(d,`<button class="btn ok sm" data-ac="${d.id}">Aceitar e jogar</button><button class="btn sec sm" data-rc="${d.id}">Recusar</button>`)).join(''):'<div class="muted small">Nenhum desafio pendente.</div>'}</div>
+      <div class="card" style="margin-bottom:14px"><h3>Sua vez de jogar</h3>${jogar.length?jogar.map(d=>linha(d,`<button class="btn sm" data-pl="${d.id}">${d.comecei?'Continuar':'Jogar'}</button>`, d.comecei?' · tempo já correndo':'')).join(''):'<div class="muted small">Nada por aqui.</div>'}
+        ${aguardando.length?'<h3 style="margin-top:14px">Aguardando oponente</h3>'+aguardando.map(d=>linha(d,`<span class="tag">Seu tempo ${d.meuTempo>=99999999?'—':fmtT(d.meuTempo)}</span>`, d.status==='pendente'?' · ainda não aceitou':d.oponenteTerminou?'':' · jogando')).join(''):''}</div>
+      <div class="card"><h3>Histórico</h3>${encerrados.length?encerrados.map(d=>linha(d,resTag(d), d.status==='finalizado'?` · você ${d.meuTempo==null?'não jogou':d.meuTempo>=99999999?'desistiu':fmtT(d.meuTempo)} × ${d.tempoOponente==null?'não jogou':d.tempoOponente>=99999999?'desistiu':fmtT(d.tempoOponente)}`:'')).join(''):'<div class="muted small">Seus duelos encerrados aparecem aqui.</div>'}
+        <p class="small muted" style="margin-top:10px">Vitórias: ${S.user.vitorias} · Derrotas: ${S.user.derrotas}</p></div>
+    </div></div>`;
+  $('#dGo').onclick=async()=>{ const b=$('#dGo'); b.disabled=true;
+    try{ const r=await api('duelCreate',{token:S.token, oponente:$('#dOp').value, nivel:$('#dNv').value}); r.duelo.nomeOponente=(ops.find(u=>u.username===r.duelo.desafiado)||{}).nome; await jogaDuelo(r.duelo); }
+    catch(e){ toast(e.message); b.disabled=false; } };
+  v.querySelectorAll('[data-ac]').forEach(b=>b.onclick=async()=>{ try{ const d=S.duelos.find(x=>x.id===b.dataset.ac); await api('duelAccept',{token:S.token,id:d.id}); d.status='aceito'; await jogaDuelo(d); }catch(e){ toast(e.message); } });
+  v.querySelectorAll('[data-rc]').forEach(b=>b.onclick=async()=>{ if(!confirm('Recusar este desafio?')) return; try{ await api('duelDecline',{token:S.token,id:b.dataset.rc}); viewDuelos(); atualizaDuelosBadge(); }catch(e){ toast(e.message); } });
+  v.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>jogaDuelo(S.duelos.find(x=>x.id===b.dataset.pl)).catch(e=>toast(e.message)));
+}
+async function jogaDuelo(d){
+  const r=await api('duelStart',{token:S.token,id:d.id});
+  const nome=d.nomeOponente; S.duelo={...r.duelo, nomeOponente:nome||r.duelo.nomeOponente}; S.modo='duelo';
+  const inicioLocal=Date.now()-(r.agora-r.inicio);
+  mostra('jogar'); iniciaJogo(gerarJogo(d.nivel,d.semente), inicioLocal); atualizaDuelosBadge();
+}
+
+/* ===================== RANKING ===================== */
+function precisaLogin(o){ return `<div class="card vazio"><p>Entre ou crie um usuário para ${o}.</p><button class="btn" onclick="abreAuth('criar')">Criar usuário</button> <button class="btn sec" onclick="abreAuth('entrar')">Entrar</button></div>`; }
+async function viewRanking(){
+  const v=$('#v-ranking'); v.innerHTML='<div class="vazio">Carregando ranking…</div>';
+  try{ S.ranking=(await api('ranking')).ranking; }catch(e){ v.innerHTML=`<div class="vazio">${esc(e.message)}</div>`; return; }
+  const rk=S.ranking, eu=S.user&&S.user.username;
+  const pod=(u,pos)=>{ if(!u) return '<div></div>'; const i=tierIdx(u.pontos); return `<div class="pod p${pos} t${i}" style="${tvars(i)}"><div class="pos">${['🥇','🥈','🥉'][pos-1]}</div><div style="margin:4px 0">${emblema(i,pos===1?60:48)}</div><div class="nm nome-t${i}">${esc(u.nome)}</div><div class="small muted">${TIERS[i].nome}</div><div class="pt">${u.pontos} pts</div></div>`; };
+  v.innerHTML=`<div class="barra"><h2 style="margin:0">Ranking</h2><div class="sp"></div><button class="btn sec sm" id="rkUp">Atualizar</button></div>
+    ${rk.length?`<div class="podio">${pod(rk[1],2)}${pod(rk[0],1)}${pod(rk[2],3)}</div>`:''}
+    <div class="lista">${rk.map((u,k)=>{ const i=tierIdx(u.pontos);
+      return `<div class="row t${i} ${u.username===eu?'eu':''}" style="${tvars(i)}"><div class="pos">${k+1}º</div><div class="av">${esc(u.nome[0]||'?').toUpperCase()}</div>
+      <div style="min-width:0"><div class="nm">${emblema(i,24)}<span class="n nome-t${i}">${esc(u.nome)}</span>${TIERS[i].coroa?'<span class="coroa">👑</span>':''}<span class="tierlbl">${TIERS[i].nome}</span></div>
+      <div class="sub">@${esc(u.username)} · 🔥 ${u.sequencia} dia(s) · ${u.partidas} jogos · ⚔️ ${u.vitorias}V ${u.derrotas}D ${S.user&&u.username!==eu?`· <button class="lnk" data-d="${esc(u.username)}">Desafiar</button>`:''}</div></div>
+      <div class="pt">${u.pontos}<small>pontos</small></div></div>`; }).join('')||'<div class="vazio">Ninguém pontuou ainda. Seja o primeiro!</div>'}</div>`;
+  $('#rkUp').onclick=viewRanking;
+  v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{ mostra('duelos'); viewDuelos(b.dataset.d); });
+}
+
+/* ===================== EVOLUÇÃO ===================== */
+async function viewEvolucao(){
+  const v=$('#v-evolucao');
+  if(!S.user){ v.innerHTML=precisaLogin('acompanhar sua evolução'); return; }
+  v.innerHTML='<div class="vazio">Carregando…</div>';
+  let h; try{ h=(await api('history',{token:S.token})).historico; }catch(e){ v.innerHTML=`<div class="vazio">${esc(e.message)}</div>`; return; }
+  const u=S.user, i=tierIdx(u.pontos), prox=TIERS[i+1];
+  const base=Math.max(TIERS[i].min,0), pct=prox?Math.max(0,Math.min(100,(u.pontos-base)/(prox.min-base)*100)):100;
+  v.innerHTML=`<h2>Minha evolução</h2>
+  <div class="card" style="${tvars(i)};display:flex;gap:16px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+    ${emblema(i,76)}<div style="flex:1;min-width:200px"><div class="small muted">Categoria atual</div><div style="font-size:24px;font-weight:900" class="nome-t${i}">${TIERS[i].nome}</div>
+    <div class="prog"><i style="width:${pct}%"></i></div><div class="small muted">${prox?`Faltam <b>${prox.min-u.pontos}</b> pontos para <b>${prox.nome}</b>`:'Você chegou ao topo!'}</div></div></div>
+  <div class="stats">
+    <div class="stat"><div class="v">${u.pontos}</div><div class="l">Pontos</div></div>
+    <div class="stat"><div class="v">🔥 ${u.sequencia}</div><div class="l">Sequência atual (recorde ${u.melhorSequencia})</div></div>
+    <div class="stat"><div class="v">${u.partidas}</div><div class="l">Jogos concluídos</div></div>
+    <div class="stat"><div class="v">${u.vitorias}<span class="muted" style="font-size:16px"> / ${u.derrotas}</span></div><div class="l">Duelos vencidos / perdidos</div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px"><h3>Pontos ao longo do tempo</h3><div class="grafico">${grafico(h)}</div>
+    <p class="small muted" style="margin:6px 0 0">${u.jogouHoje?'✅ Meta diária de hoje cumprida.':'🎯 Conclua um jogo hoje para ganhar +5 e não perder 2 pontos amanhã.'}</p></div>
+  <div class="card"><h3>Atividade recente</h3><div class="hist">${h.slice().reverse().slice(0,40).map(x=>`<div class="it"><span>${rotulo(x)}<br><span class="small muted">${x.dataHora.replace('T',' ').slice(0,16).split(' ').map((s,j)=>j?s:s.split('-').reverse().join('/')).join(' ')}</span></span><span class="${x.pontos>=0?'mais':'menos'}">${fmtPts(x.pontos)}</span></div>`).join('')||'<div class="muted small">Jogue para ver seu histórico.</div>'}</div></div>`;
+}
+function rotulo(x){
+  if(x.tipo==='partida') return 'Jogo '+(NIVEIS[x.nivel]?NIVEIS[x.nivel].nome:x.nivel)+(x.detalhe?' · '+esc(x.detalhe):'');
+  if(x.tipo==='bonus') return '🎯 Meta diária';
+  if(x.tipo==='penalidade') return '⏰ Penalidade · '+esc(x.detalhe);
+  if(x.tipo==='duelo') return '⚔️ Duelo · '+esc(x.detalhe);
+  return esc(x.tipo);
+}
+function grafico(h){
+  if(!h.length) return '<div class="muted small">Sem dados ainda.</div>';
+  const pts=[{s:0}].concat(h.map(x=>({s:x.saldo})));
+  const W=700,H=200,P=30, mn=Math.min(0,...pts.map(p=>p.s)), mx=Math.max(5,...pts.map(p=>p.s));
+  const X=k=>P+(W-P-10)*(pts.length===1?0:k/(pts.length-1)), Y=s=>H-P-(H-P-10)*((s-mn)/(mx-mn||1));
+  const d=pts.map((p,k)=>(k?'L':'M')+X(k).toFixed(1)+' '+Y(p.s).toFixed(1)).join(' ');
+  const ticks=[mn,Math.round((mn+mx)/2),mx];
+  // limites de categoria visíveis no intervalo
+  const lim=TIERS.filter(t=>t.min>mn&&t.min<mx).map(t=>`<line x1="${P}" x2="${W-10}" y1="${Y(t.min)}" y2="${Y(t.min)}" stroke="${t.c2}" stroke-dasharray="4 4" opacity=".6"/><text x="${W-12}" y="${Y(t.min)-4}" text-anchor="end" font-size="11" fill="${t.c2}" font-weight="800">${t.nome}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolução de pontos">
+    ${ticks.map(t=>`<line x1="${P}" x2="${W-10}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)"/><text x="${P-6}" y="${Y(t)+4}" text-anchor="end" font-size="11" fill="var(--ink2)">${t}</text>`).join('')}
+    ${lim}
+    <path d="${d} L${X(pts.length-1)} ${Y(mn)} L${X(0)} ${Y(mn)} Z" fill="var(--pri)" opacity=".12"/>
+    <path d="${d}" fill="none" stroke="var(--pri)" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="${X(pts.length-1)}" cy="${Y(pts[pts.length-1].s)}" r="4.5" fill="var(--pri)"/>
+  </svg>`;
+}
+
+/* ===================== RECOMPENSAS ===================== */
+function viewRecompensas(){
+  const p=S.user?S.user.pontos:null, at=p==null?-1:tierIdx(p);
+  $('#v-recompensas').innerHTML=`<h2>Recompensas</h2><p class="muted" style="margin-top:-6px">Suba de categoria somando pontos. Cada categoria libera um emblema e um visual novo no ranking.</p>
+  <div class="tiers">${TIERS.map((t,i)=>`<div class="tier ${p!=null&&i>at?'bloq':''} ${i===at?'atual':''}" style="${tvars(i)}">
+    <span class="st">${p==null?'':i===at?'Atual':i<at?'Liberado':'🔒 Bloqueado'}</span>${emblema(i,72)}
+    <div class="nm nome-t${i}">${t.nome}</div><div class="min">${i===0?'Inicial':'A partir de '+t.min+' pontos'}</div>
+    <ul>${t.perks.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>
+  <div class="card" style="margin-top:16px"><h3>Como ganhar pontos</h3><ul class="regras">
+    <li>Fácil <b>+1</b> · Intermediário <b>+2</b> · Difícil <b>+3</b> · Avançado <b>+4</b> por jogo concluído.</li>
+    <li>Meta diária: <b class="mais">+5</b> no primeiro jogo do dia. Cada dia sem jogar: <b class="menos">−2</b>.</li>
+    <li>Duelos: vitória <b class="mais">+10</b>, derrota <b class="menos">−5</b>.</li></ul></div>`;
+}
+
+/* ===================== TEMA E INÍCIO ===================== */
+(function(){ const t=store.get('pc_tema',null); if(t) document.documentElement.dataset.theme=t; })();
+$('#btnTema').onclick=()=>{ const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches; const n=dark?'light':'dark'; document.documentElement.dataset.theme=n; store.set('pc_tema',n); };
+if(!API_URL) $('#demoAviso').style.display='block';
+renderUser(); renderNiveis();
+if(S.token){ api('me',{token:S.token}).then(()=>{ renderNiveis(); atualizaDuelosBadge(); }).catch(()=>{}); }
+setInterval(()=>{ if(S.user) atualizaDuelosBadge(); }, 60000);
+
+</script>
+</body>
+</html>
